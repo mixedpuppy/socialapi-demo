@@ -14,11 +14,13 @@ function onLoad() {
 }
 
 function signin() {
+  var end = location.href.indexOf("sidebar.htm");
+  var baselocation = location.href.substr(0, end);
   var userdata = {
-    portrait: location.protocol + "//" + location.host + "/user.png",
+    portrait: baselocation + "/user.png",
     userName: "matey",
     dispayName: "Bucko Matey",
-    profileURL: location.protocol + "//" + location.host + "/user.html"
+    profileURL: baselocation + "/user.html"
   }
   document.cookie="userdata="+JSON.stringify(userdata);
   //port.postMessage({topic: "send.user-profile", data: userdata});

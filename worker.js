@@ -109,6 +109,7 @@ var handlers = {
           });
   },
   'social.cookies-get-response': function(port, msg) {
+    try {
     let cookies = msg.data;
     let newUserData;
     for (var i=0; i < cookies.length; i++) {
@@ -117,6 +118,8 @@ var handlers = {
         break;
       }
     }
+    if (!newUserData)
+      return;
     if (userData.userName != newUserData.userName) {
       userData = newUserData;
       port.postMessage({topic: "social.user-profile", data: userData});
@@ -129,6 +132,9 @@ var handlers = {
                 counter: "10",
                 contentPanel: location.protocol + "//" + location.host + "/statusPanel.html"
               }});
+    }
+    } catch(e) {
+      dump(e.stack+"\n");
     }
   }
 }
