@@ -76,13 +76,13 @@ navigator.mozSocial.getWorker().port.onmessage = function(e) {
 var chatWin;
 
 function openPanel(event) {
-  navigator.mozSocial.openPanel("/flyout.html", event.clientY, function(win) {
+  navigator.mozSocial.openPanel("./flyout.html", event.clientY, function(win) {
 	dump("window is opened "+win+"\n");
   });
 }
 
 function openChat(event) {
-  navigator.mozSocial.openChatWindow("/chatWindow.html?id="+(chatters++), function(win) {
+  navigator.mozSocial.openChatWindow("./chatWindow.html?id="+(chatters++), function(win) {
 	dump("chat window is opened "+win+"\n");
     chatWin = win;
   });
@@ -110,7 +110,7 @@ function notify(type) {
       port.postMessage({topic:"social.notification-create", data: data});
       break;
     case "chat-request":
-      port.postMessage({topic:"social.request-chat", data: "/chatWindow.html?id="+(chatters++)});
+      port.postMessage({topic:"social.request-chat", data: "./chatWindow.html?id="+(chatters++)});
   }
 }
 

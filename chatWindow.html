@@ -30,10 +30,10 @@
       function changeSiteIcon() {
         var icon = document.getElementById("siteicon");
         icon.parentNode.removeChild(icon);
-        if (icon.getAttribute("href")== "/icon.png")
-          icon.setAttribute("href", "/message.png");
+        if (icon.getAttribute("href")== "./icon.png")
+          icon.setAttribute("href", "./message.png");
         else
-          icon.setAttribute("href", "/icon.png");
+          icon.setAttribute("href", "./icon.png");
         document.getElementsByTagName('head')[0].appendChild(icon);
       }
 
