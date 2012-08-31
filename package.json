@@ -1,0 +1,18 @@
+{
+  "author": "Michael Hanson <mhanson@mozilla.com>",
+  "name": "MozillaDemoSocialService",
+  "description": "A really simple social network for demo purposes",
+  "version": "0.0.1",
+  "main": "lib/server",
+  "private": "true",
+  "engines": {
+    "node": ">=0.4.7"
+  },
+  "dependencies": {
+    "websocket":"",
+    "express":""
+  },
+  "scripts": {
+    "test": "node test/run.js"
+  }
+}
