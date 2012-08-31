@@ -121,6 +121,8 @@ var handlers = {
     if (!newUserData)
       return;
     if (userData.userName != newUserData.userName) {
+      var end = location.href.indexOf("worker.js");
+      var baselocation = location.href.substr(0, end);
       userData = newUserData;
       port.postMessage({topic: "social.user-profile", data: userData});
       broadcast('social.user-profile', userData);
@@ -130,7 +132,7 @@ var handlers = {
                 name: "test",
                 iconURL: RECOMMEND_ICON,
                 counter: "10",
-                contentPanel: location.protocol + "//" + location.host + "/statusPanel.html"
+                contentPanel: baselocation + "/statusPanel.html"
               }});
     }
     } catch(e) {

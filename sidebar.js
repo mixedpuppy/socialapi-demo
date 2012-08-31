@@ -97,22 +97,26 @@ function changeLoc() {
 var chatters = 0;
 function notify(type) {
   var port = navigator.mozSocial.getWorker().port;
+  // XXX shouldn't need a full url here.
+  var end = location.href.indexOf("sidebar.htm");
+  var baselocation = location.href.substr(0, end);
   switch(type) {
     case "link":
       data = {
         id: "foo",
         type: null,
-        icon: "/icon.png",
+        icon: baselocation+"/icon.png",
         body: "This is a cool link",
         action: "link",
         actionArgs: {
-          toURL: "/"
+          toURL: baselocation
         }
       }
       port.postMessage({topic:"social.notification-create", data: data});
       break;
     case "chat-request":
-      port.postMessage({topic:"social.request-chat", data: "./chatWindow.html?id="+(chatters++)});
+      port.postMessage({topic:"social.request-chat", data: baselocation+"/chatWindow.html?id="+(chatters++)});
+      break;
   }
 }
 
