@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>Demo Social Service</title>
+</head>
+<link rel="manifest" type="text/json" href="manifest.json"></link>
+
+<script>
+function activate() {
+  var event = new CustomEvent("ActivateSocialFeature");
+  document.dispatchEvent(event);
+}
+</script>
+<body>
+
+nothing to see here
+
+<button onclick="activate()">Activate The Demo Provider</button> 
+</body>
+</html>

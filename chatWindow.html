@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link id="siteicon" rel="icon" href="/icon.png"/>
+    <title>Me!</title>
+    <script>
+      function onLoad() {
+        var worker = navigator.mozSocial.getWorker();
+        if (worker) {
+          document.body.style.background = "green";
+          worker.port.postMessage({topic: "broadcast.listen", data: true});
+        } else {
+          document.body.style.background = "red";
+        }
+      }
+
+      window.addEventListener("socialFrameShow", function(e) {
+        dump("chat window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+      }, false);
+      window.addEventListener("socialFrameHide", function(e) {
+        dump("chat window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+      }, false);
+      
+      var origTitle = document.title;
+      var counter = 0;
+      function changeTitle() {
+        document.title = origTitle + "("+(++counter)+")";
+      }
+      function changeSiteIcon() {
+        var icon = document.getElementById("siteicon");
+        icon.parentNode.removeChild(icon);
+        if (icon.getAttribute("href")== "/icon.png")
+          icon.setAttribute("href", "/message.png");
+        else
+          icon.setAttribute("href", "/icon.png");
+        document.getElementsByTagName('head')[0].appendChild(icon);
+      }
+
+      function notifyActivity() {
+        changeSiteIcon();
+        changeTitle();
+        var evt = document.createEvent("CustomEvent");
+        evt.initCustomEvent("chatActivity", true, true, {});
+        document.documentElement.dispatchEvent(evt);
+      }
+      function startActivity() {
+        window.setInterval(notifyActivity, 3000);
+      }
+    </script>
+</head>
+
+<body onload="onLoad()" style="background: white">
+<div>
+<input />
+<button onclick="startActivity()">start activity interval</button>
+</div>
+</body>
+</html>

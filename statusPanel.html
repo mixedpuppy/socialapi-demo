@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link id="siteicon" rel="icon" href="/icon.png"/>
+    <title>Demo Status Window</title>
+    <script>
+      function onLoad() {
+        var worker = navigator.mozSocial.getWorker();
+        if (worker) {
+          document.body.style.background = "green";
+          worker.port.postMessage({topic: "broadcast.listen", data: true});
+        } else {
+          document.body.style.background = "red";
+        }
+      }
+
+      window.addEventListener("socialFrameShow", function(e) {
+        dump("status window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+      }, false);
+      window.addEventListener("socialFrameHide", function(e) {
+        dump("status window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+      }, false);
+    </script>
+</head>
+
+<body onload="onLoad()" style="background: white">
+<h3>This window shows some status information</h3>
+</body>
+</html>

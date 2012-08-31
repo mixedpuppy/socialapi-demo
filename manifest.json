@@ -1,0 +1,10 @@
+{
+  "services": {
+    "social": {
+    "name": "Demo Social Service",
+    "iconURL": "/icon.png",
+    "workerURL": "/worker.js",
+    "sidebarURL": "/sidebar.htm",
+   }
+  }
+}
