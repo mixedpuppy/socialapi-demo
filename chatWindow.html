@@ -41,7 +41,7 @@
         changeSiteIcon();
         changeTitle();
         var evt = document.createEvent("CustomEvent");
-        evt.initCustomEvent("chatActivity", true, true, {});
+        evt.initCustomEvent("socialChatActivity", true, true, {});
         document.documentElement.dispatchEvent(evt);
       }
       function startActivity() {
