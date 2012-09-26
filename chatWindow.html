@@ -15,6 +15,13 @@
         }
       }
 
+      window.addEventListener("focus", function(e) {
+        dump("chat window got focus event, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+      }, false);
+      window.addEventListener("blur", function(e) {
+        dump("chat window got BLUR event, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+      }, false);
+
       window.addEventListener("socialFrameShow", function(e) {
         dump("chat window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
