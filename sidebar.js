@@ -94,6 +94,13 @@ function changeLoc() {
   window.location = "http://www.mozilla.org";
 }
 
+window.addEventListener("socialFrameShow", function(e) {
+  dump("status window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+}, false);
+window.addEventListener("socialFrameHide", function(e) {
+  dump("status window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+}, false);
+
 var chatters = 0;
 function notify(type) {
   var port = navigator.mozSocial.getWorker().port;
