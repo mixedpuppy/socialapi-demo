@@ -1,10 +1,8 @@
-var port = navigator.mozSocial.getWorker().port;
 
 function onLoad() {
   var worker = navigator.mozSocial.getWorker();
   if (worker) {
     document.body.style.border = "3px solid green";
-    worker.port.postMessage({topic: "broadcast.listen", data: true});
   } else {
     document.body.style.border = "3px solid red";
   }
@@ -23,13 +21,19 @@ function signin() {
     profileURL: baselocation + "/user.html"
   }
   document.cookie="userdata="+JSON.stringify(userdata);
-  //port.postMessage({topic: "send.user-profile", data: userdata});
 }
 
 function signout() {
   // send an empty user object to signal a signout to firefox
   document.cookie="userdata=";
-  //port.postMessage({topic: "send.user-profile", data: {}});
+}
+
+function openDataPanel(event) {
+  // currently cant do this
+  var url = "data:text/html,%3Chtml%3E%3Cbody%3E%3Cp%3EInline%20data%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E";
+  navigator.mozSocial.openPanel(url, event.clientY, function(win) {
+	dump("window is opened "+win+"\n");
+  });
 }
 
 function userIsConnected(userdata)
@@ -53,27 +57,32 @@ function userIsDisconnected()
 }
 
 messageHandlers = {
+  "worker.connected": function(data) {
+    // our port has connected with the worker, do some initialization
+    // worker.connected is our own custom message
+    var worker = navigator.mozSocial.getWorker();
+    worker.port.postMessage({topic: "broadcast.listen", data: true});
+  },
   "social.user-profile": function(data) {
     if (data.userName)
       userIsConnected(data);
     else
       userIsDisconnected();
   },
-  checkconnectionack: function(msg) {
-    userIsConnected(msg);
-  },
-  connectionclose: function(msg) {
-    userIsDisconnected(msg);
-  },
 };
 
-navigator.mozSocial.getWorker().port.onmessage = function(e) {
-    //dump("Got message: " + e.data.topic + " " + e.data.data +"\n");
+navigator.mozSocial.getWorker().port.onmessage = function onmessage(e) {
+    //dump("SIDEBAR Got message: " + e.data.topic + " " + e.data.data +"\n");
     var topic = e.data.topic;
     var data = e.data.data;
     if (messageHandlers[topic])
         messageHandlers[topic](data);
 };
+
+function workerReload() {
+  var worker = navigator.mozSocial.getWorker();
+  worker.port.postMessage({topic: "worker.reload", data: true});
+}
 
 var chatWin;
 
@@ -94,6 +103,9 @@ function changeLoc() {
   window.location = "http://www.mozilla.org";
 }
 
+window.addEventListener("scroll", function(e) {
+  dump("scrolling sidebar...\n");
+}, false);
 window.addEventListener("socialFrameShow", function(e) {
   dump("status window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);

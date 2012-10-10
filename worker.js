@@ -58,6 +58,7 @@ onconnect = function(e) {
         }
       }
     }
+    port.postMessage({topic: "worker.connected"})
 
 
   } catch (e) {
@@ -68,6 +69,10 @@ onconnect = function(e) {
 var userData = {};
 // Messages from the sidebar and chat windows:
 var handlers = {
+  'worker.reload': function(port, msg) {
+    broadcast(msg.topic, msg.data);
+    apiPort.postMessage({topic: 'social.reload-worker'});
+  },
   'social.initialize': function(port, data) {
     log("social.initialize called, capturing apiPort");
     apiPort = port;
@@ -99,7 +104,13 @@ var handlers = {
                 'shareTooltip': "Recommend this site",
                 'unshareTooltip': "Remove recommendation",
                 'sharedLabel': "Love It!",
-                'unsharedLabel': "Hate It!"
+                'unsharedLabel': "Hate It!",
+                "unshareLabel": "dont do this",
+                "portraitLabel": "dont do this", 
+                "unshareConfirmLabel": "dont do this",
+                "unshareConfirmAccessKey": "dont do this",
+                "unshareCancelLabel": "dont do this",
+                "unshareCancelAccessKey": "dont do this"
               },
               images: {
                 'share': RECOMMEND_ICON,
@@ -118,8 +129,10 @@ var handlers = {
         break;
       }
     }
-    if (!newUserData)
+    if (!newUserData) {
+      //dump("no user data!\n");
       return;
+    }
     if (userData.userName != newUserData.userName) {
       var end = location.href.indexOf("worker.js");
       var baselocation = location.href.substr(0, end);

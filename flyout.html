@@ -9,22 +9,37 @@
         var worker = navigator.mozSocial.getWorker();
         if (worker) {
           document.body.style.background = "green";
-          worker.port.postMessage({topic: "broadcast.listen", data: true});
         } else {
           document.body.style.background = "red";
         }
       }
 
+      window.addEventListener("DOMWindowClose", function(e) {
+        dump("DOMWindowClose in panel...\n");
+      }, false);
+      window.addEventListener("close", function(e) {
+        dump("onclose in panel...\n");
+      }, false);
+      window.addEventListener("scroll", function(e) {
+        dump("scrolling flyout...\n");
+      }, false);
       window.addEventListener("socialFrameShow", function(e) {
         dump("flyout window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
       window.addEventListener("socialFrameHide", function(e) {
         dump("flyout window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
+      
+      function doClose() {
+        dump("trying to close myself with "+window.close+"\n");
+        navigator.mozSocial.closePanel();
+      }
     </script>
 </head>
 
 <body onload="onLoad()" style="background: white">
 <h3>This is a flyout window</h3>
+<button onclick="doClose()">close panel</button>
+
 </body>
 </html>
