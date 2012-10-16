@@ -78,6 +78,7 @@ navigator.mozSocial.getWorker().port.onmessage = function onmessage(e) {
     if (messageHandlers[topic])
         messageHandlers[topic](data);
 };
+navigator.mozSocial.getWorker().port.postMessage({topic: "broadcast.listen", data: true});
 
 function workerReload() {
   var worker = navigator.mozSocial.getWorker();
