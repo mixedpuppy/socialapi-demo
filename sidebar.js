@@ -6,9 +6,9 @@ function onLoad() {
   } else {
     document.body.style.border = "3px solid red";
   }
-  // force logout on reload for now, since we dont have real session
-  // management for a real user
-  document.cookie="userdata=";
+  $("#domain").text(location.host);
+  var data = document.cookie.split("=",2)[1];
+  userIsConnected(JSON.parse(data));
 }
 
 function signin() {

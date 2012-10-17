@@ -17,9 +17,14 @@ var _broadcastReceivers = [];
 function broadcast(topic, payload)
 {
   // we need to broadcast to all ports connected to this shared worker
-  for (var i = 0; i < _broadcastReceivers.length; i++) {
+  ports = [].concat(_broadcastReceivers);
+  for (var i = 0; i < ports.length; i++) {
     //log("about to broadcast to " + _broadcastReceivers[i]);
-  _broadcastReceivers[i].postMessage({topic: topic, data: payload});
+    try {
+      ports[i].postMessage({topic: topic, data: payload});
+    } catch(e) {
+      _broadcastReceivers.splice(i, 1);
+    }
   }
 }
 
@@ -58,7 +63,8 @@ onconnect = function(e) {
         }
       }
     }
-    port.postMessage({topic: "worker.connected"})
+    port.postMessage({topic: "worker.connected"});
+    port.postMessage({topic: "social.user-profile", data: userData});
 
 
   } catch (e) {
@@ -128,10 +134,6 @@ var handlers = {
         newUserData = cookies[i].value ? JSON.parse(cookies[i].value) : {};
         break;
       }
-    }
-    if (!newUserData) {
-      //dump("no user data!\n");
-      return;
     }
     if (userData.userName != newUserData.userName) {
       var end = location.href.indexOf("worker.js");
