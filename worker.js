@@ -76,12 +76,14 @@ var userData = {};
 // Messages from the sidebar and chat windows:
 var handlers = {
   'worker.reload': function(port, msg) {
+    clearInterval(checkCookies);
     broadcast(msg.topic, msg.data);
     apiPort.postMessage({topic: 'social.reload-worker'});
   },
   'social.initialize': function(port, data) {
     log("social.initialize called, capturing apiPort");
     apiPort = port;
+    setInterval(checkCookies, 1000);
   },
   'broadcast.listen': function(port, data) {
     if (data)
@@ -160,4 +162,3 @@ var handlers = {
 function checkCookies() {
   apiPort.postMessage({topic: 'social.cookies-get'});  
 }
-setInterval(checkCookies, 1000);
