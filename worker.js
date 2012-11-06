@@ -196,7 +196,12 @@ var handlers = {
                 name: "test",
                 iconURL: RECOMMEND_ICON,
                 counter: "10",
-                contentPanel: baselocation + "/statusPanel.html"
+                contentPanel: baselocation + "/statusPanel.html",
+                label: "Test Ambient 1",
+                // normally this would be a url to a web page that works in
+                // a normal browser tab, we're just reusing this panel for
+                // testing
+                menuURL: baselocation + "/statusPanel.html"
               }});
     }
     } catch(e) {
