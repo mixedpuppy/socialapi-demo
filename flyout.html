@@ -3,15 +3,29 @@
 <html>
 <head>
     <link id="siteicon" rel="icon" href="/icon.png"/>
+    <style>
+        body {
+            margin: 4px;
+            padding: 0;
+            border: none;
+            background: inherit;
+        }
+        #content {
+            margin: 0;
+            padding: 4px;
+            border: 1px solid grey;
+        }
+    </style>
     <title>Something Interesting</title>
     <script>
       function onLoad() {
         // visual verification that we do indeed get a worker port
         var worker = navigator.mozSocial.getWorker();
+        var el = document.getElementById("content");
         if (worker) {
-          document.body.style.background = "green";
+          el.style.borderColor = "green";
         } else {
-          document.body.style.background = "red";
+          el.style.borderColor = "red";
         }
       }
 
@@ -40,14 +54,16 @@
     </script>
 </head>
 
-<body onload="onLoad()" style="background: white">
+<body onload="onLoad()">
+<div id="content">
 
 <h3>This is a flyout window</h3>
 
 <!-- we can simply use window.close if we want to close this panel -->
 <button onclick="window.close();">close panel</button>
 
-<p>This link should open in a tab rather than replacing content in this panel: <a href="http://www.caraveo.com">test link</a></p>
+<div>This link should open in a tab rather than replacing content in this panel: <a href="http://www.caraveo.com">test link</a></div>
+</div>
 
 </body>
 </html>

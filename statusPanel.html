@@ -3,14 +3,29 @@
 <html>
 <head>
     <link id="siteicon" rel="icon" href="./icon.png"/>
+    <style>
+        body {
+            margin: 4px;
+            padding: 0;
+            border: none;
+            background: inherit;
+        }
+        #content {
+            margin: 0;
+            padding: 4px;
+            border: 1px solid grey;
+        }
+    </style>
     <title>Demo Status Window</title>
     <script>
       function onLoad() {
+        // visual verification that we do indeed get a worker port
         var worker = navigator.mozSocial.getWorker();
+        var el = document.getElementById("content");
         if (worker) {
-          document.body.style.background = "green";
+          el.style.borderColor = "green";
         } else {
-          document.body.style.background = "red";
+          el.style.borderColor = "red";
         }
       }
 
@@ -23,9 +38,11 @@
     </script>
 </head>
 
-<body onload="onLoad()" style="background: white">
+<body onload="onLoad()">
+<div id="content">
 <h3>This window shows some status information</h3>
 <button onclick="window.close()">close panel</button>
 <a href="http://www.caraveo.com">test link</a>
+</div>
 </body>
 </html>

@@ -3,15 +3,29 @@
 <html>
 <head>
     <link id="siteicon" rel="icon" href="./icon.png"/>
+    <style>
+        body {
+            margin: 4px;
+            padding: 0;
+            border: none;
+            background: inherit;
+        }
+        #content {
+            margin: 0;
+            padding: 4px;
+            border: 1px solid grey;
+        }
+    </style>
     <title>Me!</title>
     <script>
       function onLoad() {
         // visual verification that we do indeed get a worker port
         var worker = navigator.mozSocial.getWorker();
+        var el = document.getElementById("content");
         if (worker) {
-          document.body.style.background = "green";
+          el.style.borderColor = "green";
         } else {
-          document.body.style.background = "red";
+          el.style.borderColor = "red";
         }
       }
 
@@ -67,8 +81,8 @@
     </script>
 </head>
 
-<body onload="onLoad()" style="background: white">
-<div>
+<body onload="onLoad()">
+<div id="content">
 <input />
 <!-- this is just a way to test the icon, title and activity notification -->
 <button onclick="startActivity()">start activity interval</button>
