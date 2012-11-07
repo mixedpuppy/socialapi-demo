@@ -40,9 +40,15 @@
   <li><button onclick="location.reload()">reload sidebar</button></li>
   <li><button onclick="workerReload()">reload the worker</button></li>
 </ul>
-<div id="hovertest" style="margin: 4px; border: 1px solid grey">
+<div id="hovertest" style="margin: 4px; border: 1px solid grey; height: 75px; overflow: hidden; overflow-y: scroll">
   Flyout Hover Test
   <ul>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
   <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
   <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
   </ul>

@@ -93,7 +93,9 @@ function workerReload() {
 // to the window in our callback.
 var panelWin;
 function openPanel(button) {
-  navigator.mozSocial.openPanel("./flyout.html", button.offsetTop, function(win) {
+  var div = document.getElementById("hovertest");
+  var baseOffset = button.offsetTop - div.scrollTop + (button.clientHeight/2);
+  navigator.mozSocial.openPanel("./flyout.html", baseOffset, function(win) {
     dump("window is opened "+win+"\n");
     panelWin = win;
   });
