@@ -1,48 +1,18 @@
 <!DOCTYPE html>
-
 <html>
 <head>
     <link id="siteicon" rel="icon" href="./icon.png"/>
-    <style>
-        body {
-            margin: 4px;
-            padding: 0;
-            border: none;
-            background: inherit;
-        }
-        #content {
-            margin: 0;
-            padding: 4px;
-            border: 1px solid grey;
-        }
-    </style>
+    <link rel="stylesheet" href="./panel.css"/>
     <title>Demo Status Window</title>
-    <script>
-      function onLoad() {
-        // visual verification that we do indeed get a worker port
-        var worker = navigator.mozSocial.getWorker();
-        var el = document.getElementById("content");
-        if (worker) {
-          el.style.borderColor = "green";
-        } else {
-          el.style.borderColor = "red";
-        }
-      }
-
-      window.addEventListener("socialFrameShow", function(e) {
-        dump("status window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
-      }, false);
-      window.addEventListener("socialFrameHide", function(e) {
-        dump("status window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
-      }, false);
-    </script>
+    <script src="./panel.js" type="text/javascript"></script>
 </head>
 
 <body onload="onLoad()">
-<div id="content">
-<h3>This window shows some status information</h3>
-<button onclick="window.close()">close panel</button>
-<a href="http://www.caraveo.com">test link</a>
-</div>
+    <div id="content">
+    <h3>This window shows some status information</h3>
+    <button onclick="changeSize();">change panel size</button>
+    <button onclick="window.close()">close panel</button>
+    <a href="http://www.caraveo.com">test link</a>
+    </div>
 </body>
 </html>

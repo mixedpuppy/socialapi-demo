@@ -1,0 +1,13 @@
+body {
+  margin: 4px;
+  padding: 0;
+  border: none;
+  background: inherit;
+}
+#content {
+  margin: 0;
+  padding: 4px;
+  border: 1px solid grey;
+  width: auto;
+  height: auto;
+}

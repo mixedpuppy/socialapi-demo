@@ -1,69 +1,18 @@
 <!DOCTYPE html>
-
 <html>
 <head>
-    <link id="siteicon" rel="icon" href="/icon.png"/>
-    <style>
-        body {
-            margin: 4px;
-            padding: 0;
-            border: none;
-            background: inherit;
-        }
-        #content {
-            margin: 0;
-            padding: 4px;
-            border: 1px solid grey;
-        }
-    </style>
-    <title>Something Interesting</title>
-    <script>
-      function onLoad() {
-        // visual verification that we do indeed get a worker port
-        var worker = navigator.mozSocial.getWorker();
-        var el = document.getElementById("content");
-        if (worker) {
-          el.style.borderColor = "green";
-        } else {
-          el.style.borderColor = "red";
-        }
-      }
-
-      // dumping these events for test reasons
-      window.addEventListener("DOMWindowClose", function(e) {
-        dump("DOMWindowClose in panel...\n");
-      }, false);
-      window.addEventListener("close", function(e) {
-        dump("onclose in panel...\n");
-      }, false);
-      window.addEventListener("scroll", function(e) {
-        dump("scrolling flyout...\n");
-      }, false);
-      
-      // these events are specific to socialapi, they are sent if a content
-      // area is hidden or shown.  This is useful because content may not
-      // be unloaded between viewing by the user.  In the case of chat, the
-      // panel may be minimized or collapsed into a menu button if too many
-      // chats are opened.
-      window.addEventListener("socialFrameShow", function(e) {
-        dump("flyout window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
-      }, false);
-      window.addEventListener("socialFrameHide", function(e) {
-        dump("flyout window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
-      }, false);
-    </script>
+    <link id="siteicon" rel="icon" href="./icon.png"/>
+    <link rel="stylesheet" href="./panel.css"/>
+    <title>Demo Flyout Window</title>
+    <script src="./panel.js" type="text/javascript"></script>
 </head>
 
 <body onload="onLoad()">
-<div id="content">
-
-<h3>This is a flyout window</h3>
-
-<!-- we can simply use window.close if we want to close this panel -->
-<button onclick="window.close();">close panel</button>
-
-<div>This link should open in a tab rather than replacing content in this panel: <a href="http://www.caraveo.com">test link</a></div>
-</div>
-
+    <div id="content">
+    <h3>This window shows some information</h3>
+    <button onclick="changeSize();">change panel size</button>
+    <button onclick="window.close()">close panel</button>
+    <a href="http://www.caraveo.com">test link</a>
+    </div>
 </body>
 </html>
