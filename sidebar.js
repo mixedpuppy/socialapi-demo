@@ -95,7 +95,7 @@ var panelWin;
 function openPanel(button) {
   var div = document.getElementById("hovertest");
   var baseOffset = button.offsetTop - div.scrollTop + (button.clientHeight/2);
-  navigator.mozSocial.openPanel("./flyout.html", baseOffset, function(win) {
+  navigator.mozSocial.openPanel("./flyout.html#"+button.value, baseOffset, function(win) {
     dump("window is opened "+win+"\n");
     panelWin = win;
   });

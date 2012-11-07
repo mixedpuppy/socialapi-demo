@@ -7,6 +7,15 @@ function onLoad() {
   } else {
     el.style.borderColor = "red";
   }
+
+  onhashchange();  
+}
+
+onhashchange = function() {
+  var text = document.createTextNode(location.hash);
+  var hash = document.getElementById("openValue");
+  if (hash.firstChild) hash.removeChild(hash.firstChild);
+  hash.appendChild(text);
 }
 
 // dumping these events for test reasons
