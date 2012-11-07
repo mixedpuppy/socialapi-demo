@@ -1,11 +1,7 @@
 
 function onLoad() {
   var worker = navigator.mozSocial.getWorker();
-  if (worker) {
-    document.body.style.border = "3px solid green";
-  } else {
-    document.body.style.border = "3px solid red";
-  }
+  $("body").css("background-color", worker? "green": "red")
   $("#domain").text(location.host);
   var data = document.cookie.split("=",2)[1];
   userIsConnected(JSON.parse(data));

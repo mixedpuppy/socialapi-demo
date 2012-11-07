@@ -6,6 +6,7 @@
     <title>Something Interesting</title>
     <script>
       function onLoad() {
+        // visual verification that we do indeed get a worker port
         var worker = navigator.mozSocial.getWorker();
         if (worker) {
           document.body.style.background = "green";
@@ -14,6 +15,7 @@
         }
       }
 
+      // dumping these events for test reasons
       window.addEventListener("DOMWindowClose", function(e) {
         dump("DOMWindowClose in panel...\n");
       }, false);
@@ -23,26 +25,29 @@
       window.addEventListener("scroll", function(e) {
         dump("scrolling flyout...\n");
       }, false);
+      
+      // these events are specific to socialapi, they are sent if a content
+      // area is hidden or shown.  This is useful because content may not
+      // be unloaded between viewing by the user.  In the case of chat, the
+      // panel may be minimized or collapsed into a menu button if too many
+      // chats are opened.
       window.addEventListener("socialFrameShow", function(e) {
         dump("flyout window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
       window.addEventListener("socialFrameHide", function(e) {
         dump("flyout window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
-      
-      function doClose() {
-        dump("trying to close myself with "+window.close+"\n");
-        window.close();
-      }
     </script>
 </head>
 
 <body onload="onLoad()" style="background: white">
-<h3>This is a flyout window</h3>
-<button onclick="doClose()">close panel</button>
-<a href="http://www.caraveo.com">test link</a>
 
-<embed type="application/x-shockwave-flash" src="https://www.youtube.com/v/b4AoSBqY_GI?version=3&amp;autohide=1&amp;autoplay=1&amp;rel=0&amp;showinfo=0&amp;showsearch=0" style="display: block;" id="swf_ua20wjd11" name="swf_ua20wjd11" bgcolor="#FFFFFF" quality="high" scale="scale" allowfullscreen="true" allowscriptaccess="never" salign="tl" wmode="opaque" flashvars="width=413&amp;height=232" height="232" width="413">
+<h3>This is a flyout window</h3>
+
+<!-- we can simply use window.close if we want to close this panel -->
+<button onclick="window.close();">close panel</button>
+
+<p>This link should open in a tab rather than replacing content in this panel: <a href="http://www.caraveo.com">test link</a></p>
 
 </body>
 </html>

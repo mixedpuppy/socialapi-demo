@@ -6,6 +6,7 @@
     <title>Me!</title>
     <script>
       function onLoad() {
+        // visual verification that we do indeed get a worker port
         var worker = navigator.mozSocial.getWorker();
         if (worker) {
           document.body.style.background = "green";
@@ -21,6 +22,11 @@
         dump("chat window got BLUR event, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
 
+      // these events are specific to socialapi, they are sent if a content
+      // area is hidden or shown.  This is useful because content may not
+      // be unloaded between viewing by the user.  In the case of chat, the
+      // panel may be minimized or collapsed into a menu button if too many
+      // chats are opened.
       window.addEventListener("socialFrameShow", function(e) {
         dump("chat window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
@@ -28,6 +34,9 @@
         dump("chat window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
       }, false);
       
+      
+      // we can update the icon and title of the chat through normal web
+      // functionality
       var origTitle = document.title;
       var counter = 0;
       function changeTitle() {
@@ -46,6 +55,8 @@
       function notifyActivity() {
         changeSiteIcon();
         changeTitle();
+        // this event is used to indicate to Firefox that some chat activity
+        // has occured.  Firefox updates UI based on this event.
         var evt = document.createEvent("CustomEvent");
         evt.initCustomEvent("socialChatActivity", true, true, {});
         document.documentElement.dispatchEvent(evt);
@@ -59,7 +70,9 @@
 <body onload="onLoad()" style="background: white">
 <div>
 <input />
+<!-- this is just a way to test the icon, title and activity notification -->
 <button onclick="startActivity()">start activity interval</button>
+<!-- we can simply use window.close if we want to close this panel -->
 <button onclick="window.close()">close panel</button>
 
 </div>
