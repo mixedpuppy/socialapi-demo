@@ -32,16 +32,21 @@
 
 <button onclick="signout()">signout</button>
 
-<div id="testbuttons">
-  <button onclick="openChat(event)">Chat Panel</button>
-  <button onclick="openPanel(event)">Flyout Panel</button>
-  <button onclick="openDataPanel(event)">Flyout using data url</button>
-  <button onclick="notify('link')">Notify Link</button>
-  <button onclick="notify('chat-request')">Request Chat via Worker</button>
-  <button onclick="location.reload()">reload sidebar</button>
-  <button onclick="workerReload()">reload the worker</button>
+<ul id="testbuttons">
+  <li><button onclick="openChat(event)">Chat Panel</button></li>
+  <li><button onclick="openDataPanel(event)">Flyout using data url</button></li>
+  <li><button onclick="notify('link')">Notify Link</button></li>
+  <li><button onclick="notify('chat-request')">Request Chat via Worker</button></li>
+  <li><button onclick="location.reload()">reload sidebar</button></li>
+  <li><button onclick="workerReload()">reload the worker</button></li>
+</ul>
+<div id="hovertest" style="margin: 4px; border: 1px solid grey">
+  Flyout Hover Test
+  <ul>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  <li><button onmouseover="openPanel(this)">Open</button><button onmouseover="closePanel()">Close</button></li>
+  </ul>
 </div>
-
   <ul>These links should open in tabs:
   <li><a href="http://www.mozilla.org" target="_blank">non-same-origin-link with target</a></li>
   <li><a href="http://www.mozilla.org">non-same-origin-link</a></li>

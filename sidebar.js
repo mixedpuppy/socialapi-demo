@@ -88,19 +88,26 @@ function workerReload() {
   worker.port.postMessage({topic: "worker.reload", data: true});
 }
 
-var chatWin;
-
 // we open a flyout panel which appears to one side of our sidebar.  The offset
 // allows us to line up the panel with our content.  We also get a reference
 // to the window in our callback.
-function openPanel(event) {
-  navigator.mozSocial.openPanel("./flyout.html", event.clientY, function(win) {
-	dump("window is opened "+win+"\n");
+var panelWin;
+function openPanel(button) {
+  navigator.mozSocial.openPanel("./flyout.html", button.offsetTop, function(win) {
+    dump("window is opened "+win+"\n");
+    panelWin = win;
   });
+}
+function closePanel() {
+  if (panelWin) {
+    panelWin.close();
+    panelWin = undefined;
+  }
 }
 
 // we open a chat panel, receiving a reference to the chat window in our
 // callback
+var chatWin;
 function openChat(event) {
   navigator.mozSocial.openChatWindow("./chatWindow.html?id="+(chatters++), function(win) {
 	dump("chat window is opened "+win+"\n");
