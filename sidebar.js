@@ -7,6 +7,8 @@ function onLoad() {
   userIsConnected(JSON.parse(data));
 }
 
+// a fake login function that sets a cookie.  Our worker is polling for
+// cookie changes and will update the user-profile based on this.
 function signin() {
   var end = location.href.indexOf("sidebar.htm");
   var baselocation = location.href.substr(0, end);
@@ -20,10 +22,13 @@ function signin() {
 }
 
 function signout() {
-  // send an empty user object to signal a signout to firefox
+  // send an empty user object to signal a signout to firefox.  our worker
+  // is polling for cookies and will do the real work.
   document.cookie="userdata=";
 }
 
+// open a flyout panel using a data url.  This is a good way to avoid network
+// traffic if the amount of data can be minimized.
 function openDataPanel(event) {
   // currently cant do this
   var url = "data:text/html,%3Chtml%3E%3Cbody%3E%3Cp%3EInline%20data%3C%2Fp%3E%3C%2Fbody%3E%3C%2Fhtml%3E";
@@ -76,6 +81,8 @@ navigator.mozSocial.getWorker().port.onmessage = function onmessage(e) {
 };
 navigator.mozSocial.getWorker().port.postMessage({topic: "broadcast.listen", data: true});
 
+// here we ask the worker to reload itself.  The worker will send a reload
+// message to the Firefox api.
 function workerReload() {
   var worker = navigator.mozSocial.getWorker();
   worker.port.postMessage({topic: "worker.reload", data: true});
@@ -83,12 +90,17 @@ function workerReload() {
 
 var chatWin;
 
+// we open a flyout panel which appears to one side of our sidebar.  The offset
+// allows us to line up the panel with our content.  We also get a reference
+// to the window in our callback.
 function openPanel(event) {
   navigator.mozSocial.openPanel("./flyout.html", event.clientY, function(win) {
 	dump("window is opened "+win+"\n");
   });
 }
 
+// we open a chat panel, receiving a reference to the chat window in our
+// callback
 function openChat(event) {
   navigator.mozSocial.openChatWindow("./chatWindow.html?id="+(chatters++), function(win) {
 	dump("chat window is opened "+win+"\n");
@@ -96,10 +108,7 @@ function openChat(event) {
   });
 }
 
-function changeLoc() {
-  window.location = "http://www.mozilla.org";
-}
-
+// just some test debug output for some events
 window.addEventListener("scroll", function(e) {
   dump("scrolling sidebar...\n");
 }, false);
@@ -110,6 +119,10 @@ window.addEventListener("socialFrameHide", function(e) {
   dump("status window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
 
+// this notify function is used for manual testing.  We tell the worker to
+// call an api for us so we can:
+// 1. make the worker request a chat window is opened
+// 2. make the worker send a notification
 var chatters = 0;
 function notify(type) {
   var port = navigator.mozSocial.getWorker().port;
