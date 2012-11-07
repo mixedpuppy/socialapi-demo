@@ -28,11 +28,14 @@ window.addEventListener("socialFrameHide", function(e) {
 }, false);
 
 function changeSize() {
-  var el = document.getElementById("content");
-  if (el.style.height == "auto") {
-      el.style.height = "500px";
-  } else {
-      el.style.width = "auto";
-      el.style.height = "auto";
+  var el = document.getElementById('list');
+  while (el.firstChild) {
+    el.removeChild(el.firstChild);
+  }
+  var count = Math.floor( Math.random() * 20 );
+  for( var i=0; i < count; ++i ) {
+    var ap  = document.createElement("li");
+    ap.innerHTML = "Item <span>__</span> <i>#</i> <b>" + i + "</b>";
+    el.appendChild( ap );
   }
 }
