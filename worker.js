@@ -1,4 +1,5 @@
 /* import a helper library */
+dump("************** worker.js is executing ****************\n");
 importScripts("workerScript.js");
 
 // just a demo icon that we user for our toolbar button and our
@@ -33,6 +34,12 @@ function broadcast(topic, payload)
   }
 }
 
+ononline = function() {
+  dump("!!!!!!! ononline called "+navigator.onLine+"\n");
+}
+onoffline = function() {
+  dump("!!!!!!! onoffline called "+navigator.onLine+"\n");
+}
 // Called when any port connects to the worker
 onconnect = function(e) {
   try {
@@ -49,6 +56,9 @@ onconnect = function(e) {
       }
       // handle the special message that tells us a port is closing.
       if (msg.topic && msg.topic == "social.port-closing") {
+        if (port == apiPort) {
+          dump("!!!!!!!!!!!!! apiPort has closed!\n");
+        }
         var index = _broadcastReceivers.indexOf(port);
         if (index != -1) {
           log("removed receiver " + index);
