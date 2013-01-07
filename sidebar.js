@@ -1,3 +1,4 @@
+var chatters = 0;
 
 function onLoad() {
   var worker = navigator.mozSocial.getWorker();
@@ -104,6 +105,7 @@ var panelWin;
 function openPanel(button) {
   var div = document.getElementById("hovertest");
   var baseOffset = button.offsetTop - div.scrollTop + (button.clientHeight/2);
+  dump("*** opening panel with offset "+baseOffset+"\n");
   navigator.mozSocial.openPanel("./flyout.html#"+button.value, baseOffset, function(win) {
     dump("window is opened "+win+"\n");
     panelWin = win;
@@ -114,6 +116,12 @@ function closePanel() {
     panelWin.close();
     panelWin = undefined;
   }
+}
+if (navigator.mozSocial.loadPanel) {
+  dump("********** preload the flyout\n");
+  navigator.mozSocial.loadPanel("./flyout.html", function() {
+    dump("********** flyout has loaded, ready open it\n");
+  });
 }
 
 // we open a chat panel, receiving a reference to the chat window in our
@@ -137,11 +145,24 @@ window.addEventListener("socialFrameHide", function(e) {
   dump("status window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
 
+// via the visibility api
+function onVisibilityChange() {
+  dump("onVisibilityChange, document hidden?"+document.hidden+"\n");
+}
+window.addEventListener("load", function() {
+  onVisibilityChange();
+  navigator.geolocation.getCurrentPosition(function(position) {
+    dump("geo: "+position.coords.latitude+":"+position.coords.longitude+"\n");
+  });
+});
+document.addEventListener("visibilitychange", function() {
+  onVisibilityChange()
+});
+
 // this notify function is used for manual testing.  We tell the worker to
 // call an api for us so we can:
 // 1. make the worker request a chat window is opened
 // 2. make the worker send a notification
-var chatters = 0;
 function notify(type) {
   var port = navigator.mozSocial.getWorker().port;
   // XXX shouldn't need a full url here.
@@ -166,4 +187,3 @@ function notify(type) {
       break;
   }
 }
-

@@ -46,7 +46,33 @@
 <button onclick="startActivity()">start activity interval</button>
 <!-- we can simply use window.close if we want to close this panel -->
 <button onclick="window.close()">close panel</button>
-
+  <video controls src="https://videos-cdn.mozilla.net/serv/webmademovies/Moz_Doc_0329_GetInvolved_ST.webm"
+          width="180" height="180" id="myvideo">
 </div>
 </body>
+<script>
+  var videoElement = document.getElementById("myvideo");
+
+  function toggleFullScreen() {
+    if (!document.mozFullScreen && !document.webkitFullScreen) {
+      if (videoElement.mozRequestFullScreen) {
+        videoElement.mozRequestFullScreen();
+      } else {
+        videoElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+      }
+    } else {
+      if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else {
+        document.webkitCancelFullScreen();
+      }
+    }
+  }
+
+  document.addEventListener("keydown", function(e) {
+    if (e.keyCode == 13) {
+      toggleFullScreen();
+    }
+  }, false);
+</script>
 </html>

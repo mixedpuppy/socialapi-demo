@@ -28,6 +28,12 @@ window.addEventListener("close", function(e) {
 window.addEventListener("scroll", function(e) {
   dump("scrolling flyout...\n");
 }, false);
+window.addEventListener("focus", function(e) {
+  dump("panel focus...\n");
+}, false);
+window.addEventListener("blur", function(e) {
+  dump("panel blur...\n");
+}, false);
 
 window.addEventListener("socialFrameShow", function(e) {
   dump("socialFrameShow, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
@@ -35,6 +41,17 @@ window.addEventListener("socialFrameShow", function(e) {
 window.addEventListener("socialFrameHide", function(e) {
   dump("socialFrameHide, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
+
+// via the visibility api
+function onVisibilityChange() {
+  dump("onVisibilityChange, document hidden?"+document.hidden+"\n");
+}
+document.addEventListener("load", function() {
+  onVisibilityChange();
+});
+document.addEventListener("visibilitychange", function() {
+  onVisibilityChange()
+});
 
 function changeSize() {
   var el = document.getElementById('list');

@@ -44,7 +44,7 @@ onoffline = function() {
 onconnect = function(e) {
   try {
     var port = e.ports[0];
-    
+
     // this is our basic message handler
     port.onmessage = function(e) {
       //log("worker onmessage: " + JSON.stringify(e.data));
@@ -103,14 +103,18 @@ var userData = {};
 // relying on cookies as part of our demo login functionality, we need to
 // poll the cookies for changes. We start that polling during social.initialize
 function checkCookies() {
-  apiPort.postMessage({topic: 'social.cookies-get'});  
+  apiPort.postMessage({topic: 'social.cookies-get'});
 }
 
 // Messages from the sidebar and chat windows:
 var handlers = {
+  'ping': function(port, msg) {
+    port.postMessage({topic: 'pong'});
+  },
+
   // worker.reload is our own message and is not defined by socialapi.  Our
   // test sidebar can send this, letting us know to force a reload of
-  // this worker script.  
+  // this worker script.
   'worker.reload': function(port, msg) {
     clearInterval(checkCookies);
     broadcast(msg.topic, msg.data);
@@ -126,7 +130,7 @@ var handlers = {
     setInterval(checkCookies, 1000);
   },
 
-  // our content (sidebar, etc) can request broadcast messages. 
+  // our content (sidebar, etc) can request broadcast messages.
   'broadcast.listen': function(port, data) {
     if (data)
       _broadcastReceivers.push(port);
@@ -160,16 +164,16 @@ var handlers = {
     port.postMessage({topic: 'social.user-recommend-prompt-response',
             data: {
               messages: {
-                'shareTooltip': "Recommend this site",
-                'unshareTooltip': "Remove recommendation",
+                'shareTooltip': "Tell me hearty thar be booty here",
+                'unshareTooltip': "Don't tell nay one",
                 'sharedLabel': "Love It!",
                 'unsharedLabel': "Hate It!",
-                "unshareLabel": "dont do this",
-                "portraitLabel": "dont do this", 
-                "unshareConfirmLabel": "dont do this",
-                "unshareConfirmAccessKey": "dont do this",
-                "unshareCancelLabel": "dont do this",
-                "unshareCancelAccessKey": "dont do this"
+                "unshareLabel": "Shiver me timbers!",
+                "portraitLabel": "Me Matey",
+                "unshareConfirmLabel": "Aye!",
+                "unshareConfirmAccessKey": "A",
+                "unshareCancelLabel": "Avast!",
+                "unshareCancelAccessKey": "a"
               },
               images: {
                 'share': RECOMMEND_ICON,

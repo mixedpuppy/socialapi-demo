@@ -1,15 +1,33 @@
 <html>
 <head>
 	<title>DemoSocialService</title>
-</head>
-<style>
-
-</style>
 <link rel="manifest" type="text/json" href="manifest.json"/>
 <link rel="stylesheet" href="./sidebar.css"/>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script src="./sidebar.js" type="text/javascript"></script>
-<body onload="onLoad()">
+
+<script>
+  function goTo(url) { window.open(url, "shareWindow"); }
+
+  function doSettings() {
+	var win = window.open("/settings.html", "settingsWindow", "dialog=yes, width=300px, height=200px");
+	win.addEventListener("unload", function() {
+		dump("data: ["+win.results+"]\n");
+	});
+  }
+</script>
+</head>
+<body onload="onLoad()"  contextmenu="mymenu">
+
+<menu type="context" id="mymenu">
+<menu label="Share on...">
+  <menuitem label="Twitter" icon="http://www.twitter.com/favicons/favicon.png"
+	    onclick="goTo('//twitter.com/intent/tweet?text=' + document.title + ':  ' + window.location.href);"></menuitem>
+  <menuitem label="Facebook" icon="data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8%2F9hAAAAX0lEQVQ4jWP4%2F%2F8%2FAyUYTFhHzjgDxP9JxGeQDSBVMxgTbUBCxer%2Fr999%2BQ8DJBuArJksA9A10s8AXIBoA0B%2BR%2FY%2FjD%2BEwoBoA1yT5v3PbdmCE8MAshhID%2FUMoDgzUYIBj0Cgi7ar4coAAAAASUVORK5CYII%3D"
+	    onclick="goTo('//facebook.com/sharer/sharer.php?u=' + window.location.href);"></menuitem>
+</menu>
+<menuitem label="Settings" onclick="doSettings();"></menuitem>
+</menu>
 
 <div id="header">
   <div id="signin">
@@ -33,6 +51,7 @@
 <button onclick="signout()">signout</button>
 
 <ul id="testbuttons">
+  <li><button onclick="doSettings()">Settings</button></li>
   <li><button onclick="openChat(event)">Chat Panel</button></li>
   <li><button onclick="openDataPanel(event)">Flyout using data url</button></li>
   <li><button onclick="notify('link')">Notify Link</button></li>
@@ -54,8 +73,10 @@
   </ul>
 </div>
   <ul>These links should open in tabs:
-  <li><a href="http://www.mozilla.org" target="_blank">non-same-origin-link with target</a></li>
-  <li><a href="http://www.mozilla.org">non-same-origin-link</a></li>
+  <li><a href="http://www.mozilla.org" target="_blank">external _blank</a></li>
+  <li><a href="http://www.mozilla.org" target="_content">external social</a></li>
+  <li><a href="http://www.mozilla.org">external none</a></li>
+  <li><a href="http://www.mozilla.org" onclick="window.open(this.getAttribute('href'),'socialtab').focus(); return false;">external onclick</a></li>
   </ul>
 
   <div>Shared: <div id="shared" class="textbox"></div></div>
