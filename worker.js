@@ -40,6 +40,9 @@ ononline = function() {
 onoffline = function() {
   dump("!!!!!!! onoffline called "+navigator.onLine+"\n");
 }
+onunload = function() {
+  dump("!!!!!!! onunload called\n");
+}
 // Called when any port connects to the worker
 onconnect = function(e) {
   try {

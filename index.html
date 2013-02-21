@@ -5,16 +5,39 @@
 <link rel="manifest" type="text/json" href="./manifest.json"></link>
 
 <script>
-function activate() {
+// icons from http://findicons.com/icon/158311/firefox?id=356182 by ipapun
+var data = {
+  // currently required
+  "name": "Demo Social Service",
+  "iconURL": "http://localhost:8888/firefox16.png",
+  "icon32URL": "http://localhost:8888/firefox32.png",
+  "icon64URL": "http://localhost:8888/firefox64.png",
+
+  // at least one of these must be defined
+  "workerURL": "http://localhost:8888/worker.js",
+  "sidebarURL": "http://localhost:8888/sidebar.htm",
+  "shareURL": "http://localhost:8888/share.html#%{data}",
+
+  // should be available for display purposes
+  "description": "A short paragraph about this provider",
+  "author": "Shane Caraveo, Mozilla",
+  "homepageURL": "http://localhost:8888/"
+
+  // optional
+  "version": "1.0",
+}
+
+function activate(node) {
+  node.setAttribute("data-service", JSON.stringify(data));
   var event = new CustomEvent("ActivateSocialFeature");
-  document.dispatchEvent(event);
+  node.dispatchEvent(event);
 }
 </script>
 <body>
 
 nothing to see here
 
-<button onclick="activate()">Activate The Demo Provider</button>
+<button onclick="activate(this)">Activate The Demo Provider</button>
 
 <p>Activation is only available to domains that are whitelisted in Firefox
 preferences.  See social.activation.whitelist in about:config.</p>
