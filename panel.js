@@ -35,6 +35,9 @@ window.addEventListener("blur", function(e) {
   dump("panel blur...\n");
 }, false);
 
+// frameShow/Hide will eventually be deprecated, see the visibility api below
+// these event handlers demonstrate that document.visibilityState will contain
+// the same value as mozSocial.isVisible
 window.addEventListener("socialFrameShow", function(e) {
   dump("socialFrameShow, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
@@ -43,6 +46,7 @@ window.addEventListener("socialFrameHide", function(e) {
 }, false);
 
 // via the visibility api
+// https://developer.mozilla.org/en-US/docs/DOM/Using_the_Page_Visibility_API
 function onVisibilityChange() {
   dump("onVisibilityChange, document hidden?"+document.hidden+"\n");
 }

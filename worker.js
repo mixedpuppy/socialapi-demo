@@ -22,7 +22,7 @@ var apiPort;
 var _broadcastReceivers = [];
 function broadcast(topic, payload)
 {
-  // we need to broadcast to all ports connected to this shared worker
+  // we need to broadcast to all ports connected to this markd worker
   ports = [].concat(_broadcastReceivers);
   for (var i = 0; i < ports.length; i++) {
     //log("about to broadcast to " + _broadcastReceivers[i]);
@@ -167,6 +167,7 @@ var handlers = {
     port.postMessage({topic: 'social.user-recommend-prompt-response',
             data: {
               messages: {
+                // up to Firefox 22, these values are used
                 'shareTooltip': "Tell me hearty thar be booty here",
                 'unshareTooltip': "Don't tell nay one",
                 'sharedLabel': "Love It!",
@@ -176,11 +177,20 @@ var handlers = {
                 "unshareConfirmLabel": "Aye!",
                 "unshareConfirmAccessKey": "A",
                 "unshareCancelLabel": "Avast!",
-                "unshareCancelAccessKey": "a"
+                "unshareCancelAccessKey": "a",
+                // Firefox 23 or 24 changes the arguments used
+                // bug 853151
+                'markTooltip': "Tell me hearty thar be booty here",
+                'unmarkTooltip': "Don't tell nay one",
               },
               images: {
+                // up to firefox 22
                 'share': RECOMMEND_ICON,
-                'unshare': RECOMMEND_ICON
+                'unshare': RECOMMEND_ICON,
+                // Firefox 23 or 24 changes the arguments used
+                // bug 853151
+                'mark': RECOMMEND_ICON,
+                'unmark': RECOMMEND_ICON
               }
             }
           });

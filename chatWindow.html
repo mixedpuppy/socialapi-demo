@@ -44,10 +44,11 @@
 <div id="content">
 <input />
 <!-- this is just a way to test the icon, title and activity notification -->
-<button onclick="startActivity()">start activity interval</button>
+<button onclick="startActivity()" title="pretend we have chat activity">start activity interval</button>
 <!-- we can simply use window.close if we want to close this panel -->
 <button onclick="window.close()">close panel</button>
-  <video controls src="https://videos-cdn.mozilla.net/serv/webmademovies/Moz_Doc_0329_GetInvolved_ST.webm"
+<!-- video test with full screen controls (bug 821073) -->
+<video controls src="https://videos-cdn.mozilla.net/serv/webmademovies/Moz_Doc_0329_GetInvolved_ST.webm"
           width="180" height="180" id="myvideo">
 </div>
 </body>

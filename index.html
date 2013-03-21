@@ -21,10 +21,10 @@ var data = {
   // should be available for display purposes
   "description": "A short paragraph about this provider",
   "author": "Shane Caraveo, Mozilla",
-  "homepageURL": "http://localhost:8888/"
+  "homepageURL": "http://localhost:8888/",
 
   // optional
-  "version": "1.0",
+  "version": "1.0"
 }
 
 function activate(node) {
@@ -37,7 +37,11 @@ function activate(node) {
 
 nothing to see here
 
-<button onclick="activate(this)">Activate The Demo Provider</button>
+<!-- activation requires user input, first button works, second does not. -->
+<button onclick="activate(this)" title="activate the demo provider">Activate The Demo Provider</button>
+<!-- next button illustrates that activation requires user input,
+     otherwise it will be ignored by the browser -->
+<button onclick="setTimeout(activate, 1000, this)">Auto Activate provider without user input (should fail)</button>
 
 <p>Activation is only available to domains that are whitelisted in Firefox
 preferences.  See social.activation.whitelist in about:config.</p>

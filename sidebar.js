@@ -138,14 +138,19 @@ function openChat(event) {
 window.addEventListener("scroll", function(e) {
   dump("scrolling sidebar...\n");
 }, false);
+
+// frameShow/Hide will eventually be deprecated, see the visibility api below
+// these event handlers demonstrate that document.visibilityState will contain
+// the same value as mozSocial.isVisible
 window.addEventListener("socialFrameShow", function(e) {
-  dump("status window has been shown, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+  dump("socialFrameShow, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
 window.addEventListener("socialFrameHide", function(e) {
-  dump("status window has been hidden, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
+  dump("socialFrameHide, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
 
 // via the visibility api
+// https://developer.mozilla.org/en-US/docs/DOM/Using_the_Page_Visibility_API
 function onVisibilityChange() {
   dump("onVisibilityChange, document hidden?"+document.hidden+"\n");
 }
