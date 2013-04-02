@@ -2,26 +2,25 @@
 <head>
 	<title>Demo Social Service</title>
 </head>
-<link rel="manifest" type="text/json" href="./manifest.json"></link>
 
 <script>
 // icons from http://findicons.com/icon/158311/firefox?id=356182 by ipapun
 var data = {
   // currently required
   "name": "Demo Social Service",
-  "iconURL": "http://localhost:8888/firefox16.png",
-  "icon32URL": "http://localhost:8888/firefox32.png",
-  "icon64URL": "http://localhost:8888/firefox64.png",
+  "iconURL": "/firefox16.png",
+  "icon32URL": "/firefox32.png",
+  "icon64URL": "/firefox64.png",
 
   // at least one of these must be defined
-  "workerURL": "http://localhost:8888/worker.js",
-  "sidebarURL": "http://localhost:8888/sidebar.htm",
-  "shareURL": "http://localhost:8888/share.html#%{data}",
+  "workerURL": "/worker.js",
+  "sidebarURL": "/sidebar.htm",
+  "shareURL": "/share.html#%{data}",
 
   // should be available for display purposes
   "description": "A short paragraph about this provider",
   "author": "Shane Caraveo, Mozilla",
-  "homepageURL": "http://localhost:8888/",
+  "homepageURL": "https://github.com/mixedpuppy/socialapi-demo/",
 
   // optional
   "version": "1.0"
