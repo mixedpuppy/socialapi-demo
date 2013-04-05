@@ -30,9 +30,18 @@ var data = {
 }
 
 function activate(node) {
-  node.setAttribute("data-service", JSON.stringify(data));
+  var uMatch = navigator.userAgent.match(/Firefox\/(.*)$/),
+    ffVersion;
+  if (uMatch && uMatch.length > 1) {
+    ffVersion = uMatch[1];
+  }
   var event = new CustomEvent("ActivateSocialFeature");
-  node.dispatchEvent(event);
+  if (parseInt(ffVersion) == 21) {
+    document.dispatchEvent(event); // required for fx21
+  } else {
+    node.setAttribute("data-service", JSON.stringify(data));
+    node.dispatchEvent(event);
+  }
 }
 </script>
 <body>
