@@ -131,8 +131,26 @@ var handlers = {
     log("social.initialize called, capturing apiPort");
     apiPort = port;
     setInterval(checkCookies, 1000);
+    
+    // send pagemark
+    // Firefox 23 or 24 changes the arguments used
+    // bug 853151
+    var loc = location.href;
+    var baseurl = loc.substring(0,loc.lastIndexOf('/'));
+    port.postMessage({topic: 'social.page-mark-config',
+            data: {
+              messages: {
+                'unmarkedTooltip': "Tell me hearty thar be booty here",
+                'markedTooltip': "Don't tell nay one",
+              },
+              images: {
+                'marked': baseurl+"/checked.jpg",
+                'unmarked': baseurl+"/unchecked.jpg"
+              }
+            }
+          });
   },
-
+  
   // our content (sidebar, etc) can request broadcast messages.
   'broadcast.listen': function(port, data) {
     if (data)
@@ -144,6 +162,13 @@ var handlers = {
     }
   },
 
+  // Requires Firefox 23
+  'social.page-mark': function(port, msg) {
+    log("demo worker got page-mark request for " + msg.data.url);
+    broadcast(msg.topic, msg.data);
+  },
+
+  // Deprecated as of Firefox 23
   // Sent by firefox to the worker. The user has clicked on the recommend button
   // in the urlbar
   'social.user-recommend': function(port, msg) {
@@ -152,6 +177,7 @@ var handlers = {
     broadcast(msg.topic, msg.data);
   },
 
+  // Deprecated as of Firefox 23
   // Sent by firefox to the worker. the user has clicked on the recommend button
   // in the urlbar a second time, resulting in a request to unrecommend the url.
   'social.user-unrecommend': function(port, msg) {
@@ -163,11 +189,11 @@ var handlers = {
   // Sent by firefox to the worker.  Firefox needs some configuration data to
   // enable the recommend button in the urlbar.  If we do not support the
   // recommend button, we do not have to respond to this.
+  // up to firefox 22
   'social.user-recommend-prompt': function(port, msg) {
     port.postMessage({topic: 'social.user-recommend-prompt-response',
             data: {
               messages: {
-                // up to Firefox 22, these values are used
                 'shareTooltip': "Tell me hearty thar be booty here",
                 'unshareTooltip': "Don't tell nay one",
                 'sharedLabel': "Love It!",
@@ -178,19 +204,10 @@ var handlers = {
                 "unshareConfirmAccessKey": "A",
                 "unshareCancelLabel": "Avast!",
                 "unshareCancelAccessKey": "a",
-                // Firefox 23 or 24 changes the arguments used
-                // bug 853151
-                'markTooltip': "Tell me hearty thar be booty here",
-                'unmarkTooltip': "Don't tell nay one",
               },
               images: {
-                // up to firefox 22
                 'share': RECOMMEND_ICON,
                 'unshare': RECOMMEND_ICON,
-                // Firefox 23 or 24 changes the arguments used
-                // bug 853151
-                'mark': RECOMMEND_ICON,
-                'unmark': RECOMMEND_ICON
               }
             }
           });

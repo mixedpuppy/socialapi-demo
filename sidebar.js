@@ -71,6 +71,9 @@ messageHandlers = {
     else
       userIsDisconnected();
   },
+  'social.page-mark': function(data) {
+    $("#shared").text(data.marked ? data.url : "");
+  },
   'social.user-recommend': function(data) {
     $("#shared").text(data.url);
   },
