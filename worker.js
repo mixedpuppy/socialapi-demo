@@ -142,6 +142,8 @@ var handlers = {
               messages: {
                 'unmarkedTooltip': "Tell me hearty thar be booty here",
                 'markedTooltip': "Don't tell nay one",
+                'unmarkedLabel': "Mark",
+                'markedLabel': "Unmark",
               },
               images: {
                 'marked': baseurl+"/checked.jpg",
