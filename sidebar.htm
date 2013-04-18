@@ -8,12 +8,21 @@
 
 <script>
   function goTo(url) { window.open(url, "shareWindow"); }
-
+  
   function doSettings() {
-	var win = window.open("/settings.html", "settingsWindow", "dialog=yes, width=300px, height=200px");
-	win.addEventListener("unload", function() {
-		dump("data: ["+win.results+"]\n");
-	});
+    var win = window.open("/settings.html", "settingsWindow", "dialog=yes, width=300px, height=200px");
+    win.addEventListener("unload", function() {
+      dump("data: ["+win.results+"]\n");
+    });
+  }
+  
+  function doShare() {
+    navigator.mozSocial.share({
+      url: "https://www.mozilla.org",
+      image: "https://mozorg.cdn.mozilla.net/media/img/home/firefox.png",
+      title: "Doing good is part of our code",
+      description: "Producers of awesome stuff!"
+    });
   }
 </script>
 </head>
@@ -54,6 +63,7 @@
   <li><button onclick="doSettings()">Settings</button></li>
   <li><button onclick="openChat(event)" title="open a chat window">Chat Panel</button></li>
   <li><button onclick="openDataPanel(event)">Flyout using data url</button></li>
+  <li><button onclick="doShare()">Share something</button></li>
   <li><button onclick="notify('link')">Notify Link</button></li>
   <li><button onclick="notify('chat-request')">Request Chat via Worker</button></li>
   <li><button onclick="location.reload()">reload sidebar</button></li>
