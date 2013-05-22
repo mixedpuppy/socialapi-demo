@@ -43,4 +43,17 @@ describe("browser tests", function() {
     });
   });
 
+  it("should sign users in", function(done) {
+    // Sign in user 1
+    driver.switchTo().frame("//#social-sidebar-browser");
+    driver.findElement(By.css("#signin > img")).click().then(function() {
+      // almost working, demo has a delay after the click that I need to figure
+      // out how to wait for.
+      //driver.findElement(By.css("#userid")).getText().then(function(nick) {
+      //  expect(nick).to.equal('matey');
+      //});
+      done();
+    });
+  });
+
 });
