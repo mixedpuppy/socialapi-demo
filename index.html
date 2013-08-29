@@ -30,15 +30,15 @@ function activate(node) {
 </head>
 <body>
 
-nothing to see here
 
 <!-- activation requires user input, first button works, second does not. -->
-<button onclick="activate(this)" title="activate the demo provider">Activate The Demo Provider</button>
+<dl>This button illustrates how to activate a provider from the web.</dl>
+<dl><button onclick="activate(this)" title="activate the demo provider">Activate The Demo Provider</button></dl>
 <!-- next button illustrates that activation requires user input,
      otherwise it will be ignored by the browser -->
-<button onclick="setTimeout(activate, 1000, this)">Auto Activate provider without user input (should fail)</button>
-
-<p>Activation is only available to domains that are whitelisted in Firefox
-preferences.  See social.activation.whitelist in about:config.</p>
+<div>
+<dl>This button shows that events must be user initiated in order to activeate the provider.  Nothing will happen when this button is clicked.</dl>
+<dl><button onclick="setTimeout(activate, 1000, this)">Auto Activate provider without user input (should fail)</button></dl>
+</div>
 </body>
 </html>
