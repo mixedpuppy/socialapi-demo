@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link id="siteicon" rel="icon" href="./icon.png"/>
+    <link rel="stylesheet" href="./sidebar.css"/>
+    <title>Demo Share Window</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="./panel.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    function onLoad() {
+      $("#shared").text(location.search);
+      socialMarkUpdate(true);
+    }
+    function socialMarkUpdate(isMarked) {
+        try {
+        var evt = document.createEvent("CustomEvent");
+        evt.initCustomEvent("socialMarkUpdate", true, true, JSON.stringify({marked: isMarked}));
+        document.documentElement.dispatchEvent(evt);
+        } catch(e) {
+            dump("****** unable to send socialMarkUpdate "+e+"\n");
+        }
+    }
+    var shareData;
+    addEventListener("OpenGraphData", function(e) {
+      dump("******** got OpenGraphData event! "+e.detail+"\n");
+      shareData = JSON.parse(e.detail);
+      $("#shared").text(shareData.url);
+      $("#data").text(e.detail);
+      socialMarkUpdate(true);
+    });
+    </script>
+</head>
+
+<body onload="onLoad()" contentid="content">
+  <div id="content">
+    <h3>This window shares the url</h3>
+    <div>Page Marked: <div id="shared" class="textbox"></div></div>
+    <div>Data: <div id="data" class="textbox"></div></div>
+    <button onclick="socialMarkUpdate(false); window.close()">Unmark</button>
+    <button onclick="window.close();">Close</button>
+    <button onclick="changeSize();">change panel size</button>
+
+  <ul>These links should open in tabs:
+  <li><a href="http://www.mozilla.org" target="_blank">external _blank</a></li>
+  <li><a href="http://www.mozilla.org" target="_content">external social</a></li>
+  <li><a href="http://www.mozilla.org">external none</a></li>
+  <li><a href="http://www.mozilla.org" onclick="window.open(this.getAttribute('href'),'socialtab').focus(); return false;">external onclick</a></li>
+  </ul>
+    <div>
+      <ul id="list" style="margin: 4px"/>
+    </div>
+  </div>
+</body>
+</html>
