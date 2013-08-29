@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <link id="siteicon" rel="icon" href="./icon.png"/>
+    <link id="siteicon" rel="icon" href="./firefox.png"/>
     <link id="activity" rel="activity"/>
     <link rel="stylesheet" href="./panel.css"/>
     <title>Me!</title>
@@ -37,6 +37,18 @@
       function startActivity() {
         window.setInterval(notifyActivity, 3000);
       }
+      
+      function startMediaRequest() {
+        // just initiating permission request and camera ui
+        navigator.mozGetUserMedia({video: true, audio: true}, function(stream) {
+          
+        }, function(err) {
+        });
+      }
+      
+      function goFullScreen() {
+        document.body.mozRequestFullScreen();
+      }
     </script>
 </head>
 
@@ -47,6 +59,8 @@
 <button onclick="startActivity()" title="pretend we have chat activity">start activity interval</button>
 <!-- we can simply use window.close if we want to close this panel -->
 <button onclick="window.close()">close panel</button>
+<button onclick="goFullScreen();">full screen body</button>
+<button onclick="startMediaRequest();">start camera</button>
 <!-- video test with full screen controls (bug 821073) -->
 <video controls src="https://videos-cdn.mozilla.net/serv/webmademovies/Moz_Doc_0329_GetInvolved_ST.webm"
           width="180" height="180" id="myvideo">

@@ -17,8 +17,8 @@ start() {
         echo "Selenium server is already running ($SELENIUM_PID_FILE)"
         exit 1
     fi
-    PATH=`pwd`/bin:$PATH
-    java -jar $SELENIUM_JAR_FILENAME &>/dev/null &
+    PWD=`pwd`
+    java -jar $SELENIUM_JAR_FILENAME -Dwebdriver.firefox.bin=$PWD/bin/firefox -Dwebdriver.log.file=$PWD/console.log -Dwebdriver.firefox.logfile=$PWD/firefox.log &>/dev/null &
     PID=$!
     echo $PID > $SELENIUM_PID_FILE
     CODE="000"

@@ -1,13 +1,17 @@
 /* import a helper library */
 dump("************** worker.js is executing ****************\n");
-importScripts("workerScript.js");
 
 // just a demo icon that we user for our toolbar button and our
 // recommend button.
 var RECOMMEND_ICON="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAC7ElEQVQ4jW2TS28bZRSGn7l4xnfHTopNLlYToC1JqMQlIHFRRDdISKWLClFVbIBFfwLsu0GVqi5asegCNiyQ2FCkgqIiVC4toYtCEijNDYckbjKO7x57xjOe72OR0lA1Z3n0nkdH57yvwj4lg0BWWi5OIDFCOjEzRNzUlP20jzRn59bEj1ZHGRrLMZo0iZo6dV+wVbDkq/k0I9mU+n+9CiB7rnA2fhNnL38nTl2eIzBUJswG6XQUI2wQT4RZN8J8fWuWO7/MCK/VFP8BdIDe1iqlC8fJ1Cc5OzxJ/qtPKJy5SFqA4guW6y5rTYVkXcMcmGHlm18Jum2hmTF1F9CwMHqbvJ0o4VevUWYUZ/Emtt+hOvIMDUVF74txx08jDY2B7Dzd+u29DYK7V/Cq4CPBDJPKCA6sfcuXFZ0V5RBus0Op1mWhYPNDT/L+sQDJ0i5AdhuyfP51elIB04BonMhglkvJ01xPvURiaYfSYkFWKk20Ro2D412k61Nenb0P8Fz8WgNCBr4Wpni7xNXWu1x5Ooe0a/R8H2E16d7bJOQ7PDFcQqHBcuH+EaXU6bR0BCqi1yMTl7yZ+4uS8yeDTp2JrMNnkTF+qtq8mLSIe0X8cpHD+fTuG7VkvyIyU6K17YhIQhO5pzQxVrnGh1sf8V7lHJ35BUr36girw6mxP+gPVnBX/yYcfWXviKnpkyx+8TmhtIeeHyDcp3JjcZBLGy9zqxEH9wbvHPF5a3ydTnGbwpxCdmJqz4lB1w1ufnCS8s9XOTSdIpaNqkZUZ7OV5B+rzWOxshzP2+jpBJ7dwkq9wdEzM+pDVq6vF4LvT59ALc6Tfy6qJh+PYkYEIc1D+J5UwgI9KRC5F0gf/xQjM6k+sDJAdChP/uOL2EePsbnQYWe+TGejil+zwfOw3R5z1jTbT557MPxImFrtdnB3aQlr9rrK8u+E3R3UWATlQL9k+Ah9h1/j2eenHgrTvhFtu13Zats4jgsSRkeG9tUB/AvjNVepPwFrSQAAAABJRU5ErkJggg==";
 
+var loc = location.href;
+var baseurl = loc.substring(0,loc.lastIndexOf('/'));
+importScripts("manifest.js");
+var manifest= getManifest();
+
 function log(msg) {
-  dump(new Date().toISOString() + ": [dssworker] " + msg + "\n");
+  //dump(new Date().toISOString() + ": [dssworker] " + msg + "\n");
   try {
     console.log(new Date().toISOString() + ": [dssworker] " + msg);
   } catch (e) {}
@@ -114,6 +118,16 @@ var handlers = {
   'ping': function(port, msg) {
     port.postMessage({topic: 'pong'});
   },
+  
+  'worker.update': function(port, msg) {
+    dump("***** worker setting manifest "+JSON.stringify(manifest)+"\n");
+    apiPort.postMessage({topic: 'social.manifest-get'});
+  },
+  'social.manifest': function(port, msg) {
+    dump("***** worker recieved manifest from fx "+JSON.stringify(manifest)+"\n");
+    // we could check to see if we need to update, this test just updates
+    apiPort.postMessage({topic: 'social.manifest-set', data: manifest});
+  },
 
   // worker.reload is our own message and is not defined by socialapi.  Our
   // test sidebar can send this, letting us know to force a reload of
@@ -121,6 +135,7 @@ var handlers = {
   'worker.reload': function(port, msg) {
     clearInterval(checkCookies);
     broadcast(msg.topic, msg.data);
+    // first, lets update our manifest if necessary.
     apiPort.postMessage({topic: 'social.reload-worker'});
   },
 

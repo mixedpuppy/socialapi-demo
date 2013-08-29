@@ -14,7 +14,12 @@
     
     <button onclick="changeSize();">change panel size</button>
     <button onclick="window.close()">close panel</button>
-    <a href="http://www.caraveo.com">test link</a>
+  <ul>These links should open in tabs:
+  <li><a href="http://www.mozilla.org" target="_blank">external _blank</a></li>
+  <li><a href="http://www.mozilla.org" target="_content">external social</a></li>
+  <li><a href="http://www.mozilla.org">external none</a></li>
+  <li><a href="http://www.mozilla.org" onclick="window.open(this.getAttribute('href'),'socialtab').focus(); return false;">external onclick</a></li>
+  </ul>
     <div>
       <ul id="list" style="margin: 4px"/>
     </div>

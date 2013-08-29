@@ -1,6 +1,6 @@
 
 function onLoad() {
-  $("#shared").text(location.hash);
+  $("#shared").text(location.search);
 }
 function share() {
   var worker = navigator.mozSocial.getWorker();
@@ -8,6 +8,9 @@ function share() {
     return;
   worker.port.postMessage({topic: 'social.user-recommend', data: shareData});
   window.close();
+}
+function unmark() {
+  var event = new CustomEvent("socialMarkUpdate", {"detail": false});
 }
 
 var shareData;
