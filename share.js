@@ -3,10 +3,11 @@ function onLoad() {
   $("#shared").text(location.search);
 }
 function share() {
-  var worker = navigator.mozSocial.getWorker();
-  if (!shareData)
-    return;
-  worker.port.postMessage({topic: 'social.user-recommend', data: shareData});
+  try {
+    var worker = navigator.mozSocial.getWorker();
+    if (shareData)
+      worker.port.postMessage({topic: 'social.user-recommend', data: shareData});
+  } catch(e) {}
   window.close();
 }
 function unmark() {
@@ -15,7 +16,6 @@ function unmark() {
 
 var shareData;
 addEventListener("OpenGraphData", function(e) {
-  dump("******** got OpenGraphData event! "+e.detail+"\n");
   shareData = JSON.parse(e.detail);
   $("#shared").text(shareData.url);
   $("#data").text(e.detail);
