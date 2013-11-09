@@ -1,4 +1,5 @@
 var chatters = 0;
+var baselocation = location.href.substr(0, location.href.indexOf("sidebar.htm"));
 
 function onLoad() {
   var worker = navigator.mozSocial.getWorker();
@@ -8,18 +9,67 @@ function onLoad() {
   userIsConnected(JSON.parse(data));
 }
 
-// a fake login function that sets a cookie.  Our worker is polling for
-// cookie changes and will update the user-profile based on this.
-function signin() {
-  var end = location.href.indexOf("sidebar.htm");
-  var baselocation = location.href.substr(0, end);
-  var userdata = {
+// via the visibility api
+// https://developer.mozilla.org/en-US/docs/DOM/Using_the_Page_Visibility_API
+function onVisibilityChange() {
+  dump("onVisibilityChange, document hidden?"+document.hidden+"\n");
+}
+window.addEventListener("load", function() {
+  onVisibilityChange();
+  navigator.geolocation.getCurrentPosition(function(position) {
+    dump("geo: "+position.coords.latitude+":"+position.coords.longitude+"\n");
+  });
+  // testing offline storage permission
+
+var request = indexedDB.open("workerdb", 1);
+request.onsuccess = function(event) {
+  dump("******* indexedDB opened\n");
+  var db = request.result;
+  db.close();
+};
+
+  //navigator.mozGetUserMedia({video: true, audio: true}, function(stream) {
+  //  
+  //}, function(err) {
+  //});
+});
+document.addEventListener("visibilitychange", function() {
+  onVisibilityChange()
+});
+
+var users = [
+  {
     portrait: baselocation + "/user.png",
     userName: "matey",
     dispayName: "Bucko Matey",
-    profileURL: baselocation + "/user.html"
+    profileURL: baselocation + "/user.html",
+    iconURL: baselocation + "/firefox16.png"
+  },
+  {
+    portrait: baselocation + "/user2.png",
+    userName: "Hidee Ho!",
+    dispayName: "Hidee Ho!",
+    profileURL: baselocation + "/user.html",
+    iconURL: baselocation + "/icon.png"
   }
+];
+var userdata = users[0];
+
+// a fake login function that sets a cookie.  Our worker is polling for
+// cookie changes and will update the user-profile based on this.
+function signin() {
   document.cookie="userdata="+JSON.stringify(userdata);
+}
+
+function changeusers() {
+  if (userdata == users[0])
+    userdata = users[1];
+  else
+    userdata = users[0];
+  //dump(document.cookie+"\n");
+  document.cookie="userdata=";
+  document.cookie="userdata="+JSON.stringify(userdata);
+  //dump(document.cookie+"\n");
 }
 
 function signout() {
@@ -83,7 +133,7 @@ messageHandlers = {
 };
 
 navigator.mozSocial.getWorker().port.onmessage = function onmessage(e) {
-    dump("SIDEBAR Got message: " + e.data.topic + " " + e.data.data +"\n");
+    //dump("SIDEBAR Got message: " + e.data.topic + " " + e.data.data +"\n");
     var topic = e.data.topic;
     var data = e.data.data;
     if (messageHandlers[topic])
@@ -99,6 +149,10 @@ dump("**** sidebar portid is "+navigator.mozSocial.getWorker().port._portid+"\n"
 function workerReload() {
   var worker = navigator.mozSocial.getWorker();
   worker.port.postMessage({topic: "worker.reload", data: true});
+}
+function updateManifest() {
+  var worker = navigator.mozSocial.getWorker();
+  worker.port.postMessage({topic: "worker.update", data: true});
 }
 
 // we open a flyout panel which appears to one side of our sidebar.  The offset
@@ -152,20 +206,6 @@ window.addEventListener("socialFrameHide", function(e) {
   dump("socialFrameHide, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
 }, false);
 
-// via the visibility api
-// https://developer.mozilla.org/en-US/docs/DOM/Using_the_Page_Visibility_API
-function onVisibilityChange() {
-  dump("onVisibilityChange, document hidden?"+document.hidden+"\n");
-}
-window.addEventListener("load", function() {
-  onVisibilityChange();
-  navigator.geolocation.getCurrentPosition(function(position) {
-    dump("geo: "+position.coords.latitude+":"+position.coords.longitude+"\n");
-  });
-});
-document.addEventListener("visibilitychange", function() {
-  onVisibilityChange()
-});
 
 // this notify function is used for manual testing.  We tell the worker to
 // call an api for us so we can:
@@ -174,8 +214,6 @@ document.addEventListener("visibilitychange", function() {
 function notify(type) {
   var port = navigator.mozSocial.getWorker().port;
   // XXX shouldn't need a full url here.
-  var end = location.href.indexOf("sidebar.htm");
-  var baselocation = location.href.substr(0, end);
   switch(type) {
     case "link":
       data = {
