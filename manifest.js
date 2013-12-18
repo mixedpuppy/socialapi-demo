@@ -17,8 +17,8 @@ function getManifest() {
     "shareURL": baseurl+"/share.html?url=%{url}",
     
     "markURL": baseurl+"/mark.html?url=%{url}",
-    "markedIcon": baseurl+"/unchecked.jpg",
-    "unmarkedIcon": baseurl+"/checked.jpg",
+    "markedIcon": baseurl+"/checked32.png",
+    "unmarkedIcon": baseurl+"/unchecked32.png",
   
     // should be available for display purposes
     "description": "A short paragraph about this provider",
