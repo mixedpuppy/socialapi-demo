@@ -3,6 +3,7 @@ var baseurl = loc.substring(0,loc.lastIndexOf('/'));
 
 var manifests = {
   "demoTest": {
+    "origin": "http://mixedpuppy.github.io",
     // currently required
     "name": "Demo Social Service",
     // icons from http://findicons.com/icon/158311/firefox?id=356182 by ipapun
