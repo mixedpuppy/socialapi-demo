@@ -15,14 +15,8 @@ body {
   <script src="https://code.jquery.com/jquery.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <script src="./directory.js" type="text/javascript"></script>
-  <script>
-    function onload() {
-      var textnode = document.createTextNode(location.origin);
-      document.getElementById("directory-domain").appendChild(textnode);
-    }
-  </script>
 </head>
-<body onload="onload();generate(document.getElementById('provider-list'));">
+<body onload="generate(document.getElementById('provider-list'));">
 
 
   <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -49,30 +43,12 @@ body {
   <div class="container">
 
     <div class="starter-template">
-      <h1>A list of demo and mocked up SocialAPI providers</h1>
-      <p class="lead">This website is merely a directory of services that run
-      elsewhere. Other than the Demo Social Service, these demo providers do not
-      run from this domain. You may uninstall the providers later in the Firefox
-      Add-ons Manager.</p>
-      <p class="lead">These are useful as examples and UI testing. <b>Most of these will not work
-in several ways. In most cases they are not provided by the website linked
-to.</b> You may install the Demo Social Service, which I use for basic manual UI
-testing and to illustrate how things are done. This site runs
-from the <a href="https://github.com/mixedpuppy/socialapi-demo">github
-repository for the Demo Social Service</a>.</p>
-      <p class="lead">To install from this directory page you must modify the <span
-style="font-style: italic; font-weight: bold">social.directories</span>
-preference in Firefox to include the domain <span id="directory-domain"
-style="font-style: italic; font-weight: bold"></span>, you can do that in
-about:config. If you do not know how to do that, you probably shouldn't be
-playing with these
-examples.</p>
-      <p class="lead" style="font-style: italic; font-weight: bold">Some of the
-      demos use the mobile websites, you may need to
-      install a <a
-      href="https://addons.mozilla.org/en-US/firefox/addon/wmlbrowser/">WML
-      extension for Firefox.</a></p>
-    </div>
+      <h1>Demo Social Provider</h1>
+      <p class="lead">This website drives a demo social provider used to
+      illustrate API usage and for manual testing.  Use of this demo provider
+      may interfere with the testing of the demo directory service since they
+      both run from the same domain.  Be sure to remove this demo provider
+      before using the <a href="https://mixedpuppy.github.io/socialapi-directory/en-US/">directory service</a>.</p>
 
     <div id="provider-list"/>
     </div>
