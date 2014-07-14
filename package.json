@@ -1,30 +1,19 @@
 {
-  "author": "Michael Hanson <mhanson@mozilla.com>",
-  "name": "MozillaDemoSocialService",
-  "description": "A really simple social network for demo purposes",
+  "author": "Shane Caraveo <scaraveo@mozilla.com>",
+  "name": "socialapi-demo",
+  "description": "A really simple socialapi provider for demo purposes",
   "version": "0.0.1",
-  "main": "lib/server",
-  "private": "true",
+  "scripts": {
+    "start": "node app.js"
+  },
   "engines": {
-    "node": ">=0.4.7"
+    "node": ">=0.6"
   },
   "dependencies": {
-    "websocket":"",
-    "express":"",
-    "bytes":"",
-    "mime":"",
-    "qs":""
+    "express":""
   },
-  "devDependencies": {
-    "awsbox": "0.4.x",
-    "mocha": "1.8.x",
-    "chai": "1.5.x",
-    "request": "2.16.x",
-    "jshint": "1.1.x",
-    "selenium-webdriver": "2.32.x",
-    "sinon": "1.6.x"
-  },
-  "scripts": {
-    "test": "make test"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mixedpuppy/socialapi-demo.git"
   }
 }

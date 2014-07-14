@@ -5,6 +5,7 @@ function getManifest() {
   return {
     // currently required
     "name": "Demo Social Service",
+    "origin": baseurl,
     // icons from http://findicons.com/icon/158311/firefox?id=356182 by ipapun
     "iconURL": baseurl+"/firefox16.png",
     "icon32URL": baseurl+"/firefox32.png",

@@ -1,5 +1,5 @@
 /* import a helper library */
-dump("************** worker.js is executing ****************\n");
+log("************** worker.js is executing ****************\n");
 
 // just a demo icon that we user for our toolbar button and our
 // recommend button.
@@ -11,10 +11,12 @@ importScripts("manifest.js");
 var manifest= getManifest();
 
 function log(msg) {
-  //dump(new Date().toISOString() + ": [dssworker] " + msg + "\n");
+    dump("[[[[" + new Date().toISOString() + ": [dssworker] " + msg + "\n");
   try {
     console.log(new Date().toISOString() + ": [dssworker] " + msg);
-  } catch (e) {}
+  } catch (e) {
+    
+  }
 }
 
 // The social.initialize message is sent from Firefox as a part of startup for
@@ -39,13 +41,13 @@ function broadcast(topic, payload)
 }
 
 ononline = function() {
-  dump("!!!!!!! ononline called "+navigator.onLine+"\n");
+  log("!!!!!!! ononline called "+navigator.onLine+"\n");
 }
 onoffline = function() {
-  dump("!!!!!!! onoffline called "+navigator.onLine+"\n");
+  log("!!!!!!! onoffline called "+navigator.onLine+"\n");
 }
 onunload = function() {
-  dump("!!!!!!! onunload called\n");
+  log("!!!!!!! onunload called\n");
 }
 // Called when any port connects to the worker
 onconnect = function(e) {
@@ -64,14 +66,14 @@ onconnect = function(e) {
       // handle the special message that tells us a port is closing.
       if (msg.topic && msg.topic == "social.port-closing") {
         if (port == apiPort) {
-          dump("!!!!!!!!!!!!! apiPort has closed!\n");
+          log("!!!!!!!!!!!!! apiPort has closed!\n");
         }
         var index = _broadcastReceivers.indexOf(port);
         if (index != -1) {
           log("removed receiver " + index);
           _broadcastReceivers.splice(index, 1);
         }
-        log("bwmworker port closed - now " + _broadcastReceivers.length + " connections.");
+        //log("bwmworker port closed - now " + _broadcastReceivers.length + " connections.");
         return;
       }
 
@@ -120,11 +122,11 @@ var handlers = {
   },
   
   'worker.update': function(port, msg) {
-    dump("***** worker setting manifest "+JSON.stringify(manifest)+"\n");
+    log("***** worker setting manifest "+JSON.stringify(manifest)+"\n");
     apiPort.postMessage({topic: 'social.manifest-get'});
   },
   'social.manifest': function(port, msg) {
-    dump("***** worker recieved manifest from fx "+JSON.stringify(manifest)+"\n");
+    log("***** worker recieved manifest from fx "+JSON.stringify(manifest)+"\n");
     // we could check to see if we need to update, this test just updates
     apiPort.postMessage({topic: 'social.manifest-set', data: manifest});
   },
@@ -278,7 +280,7 @@ var handlers = {
               }});
     }
     } catch(e) {
-      dump(e.stack+"\n");
+      log(e.stack+"\n");
     }
   }
 }

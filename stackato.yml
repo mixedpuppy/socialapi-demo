@@ -1,0 +1,6 @@
+name: socialapi-demo
+
+framework:
+  type: node
+
+mem: 64M
