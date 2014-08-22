@@ -22,7 +22,7 @@
     }
     var shareData;
     addEventListener("OpenGraphData", function(e) {
-      dump("******** got OpenGraphData event! "+e.detail+"\n");
+      //dump("******** got OpenGraphData event! "+e.detail+"\n");
       shareData = JSON.parse(e.detail);
       $("#shared").text(shareData.url);
       $("#data").text(e.detail);

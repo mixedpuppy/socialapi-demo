@@ -61,16 +61,16 @@
 <button onclick="signout()">signout</button>
 
 <ul id="testbuttons">
-  <li><button onclick="doSettings()">Settings</button></li>
+  <li><button onclick="doSettings()">Popup Window</button></li>
   <li><button onclick="updateManifest()">Update Manifest</button></li>
   <li><button onclick="changeusers()">Change User</button></li>
   <li><button onclick="openChat(event)" title="open a chat window">Chat Panel</button></li>
-  <li><button onclick="openDataPanel(event)">Flyout using data url</button></li>
   <li><button onclick="doShare()">Share something</button></li>
   <li><button onclick="notify('link')">Notify Link</button></li>
   <li><button onclick="notify('chat-request')">Request Chat via Worker</button></li>
   <li><button onclick="location.reload()">reload sidebar</button></li>
   <li><button onclick="workerReload()">reload the worker</button></li>
+  <li><button onclick="testPermissionPrompt()">test permission prompt</button></li>
 </ul>
 <div id="hovertest" style="margin: 4px; border: 1px solid grey; height: 75px; overflow: hidden; overflow-y: scroll">
   Flyout Hover Test

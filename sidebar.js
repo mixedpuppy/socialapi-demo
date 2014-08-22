@@ -16,26 +16,29 @@ function onVisibilityChange() {
 }
 window.addEventListener("load", function() {
   onVisibilityChange();
-  navigator.geolocation.getCurrentPosition(function(position) {
-    dump("geo: "+position.coords.latitude+":"+position.coords.longitude+"\n");
-  });
-  // testing offline storage permission
-
-var request = indexedDB.open("workerdb", 1);
-request.onsuccess = function(event) {
-  dump("******* indexedDB opened\n");
-  var db = request.result;
-  db.close();
-};
-
-  //navigator.mozGetUserMedia({video: true, audio: true}, function(stream) {
-  //  
-  //}, function(err) {
-  //});
 });
 document.addEventListener("visibilitychange", function() {
   onVisibilityChange()
 });
+
+function testPermissionPrompt() {
+  navigator.geolocation.getCurrentPosition(function(position) {
+    dump("geo: "+position.coords.latitude+":"+position.coords.longitude+"\n");
+  });
+
+  // testing offline storage permission
+  var request = indexedDB.open("workerdb", 1);
+  request.onsuccess = function(event) {
+    dump("******* indexedDB opened\n");
+    var db = request.result;
+    db.close();
+  };
+
+  //navigator.mozGetUserMedia({video: true, audio: true}, function(stream) {
+  //  
+  //}, function(err) {
+  //});  
+}
 
 var users = [
   {

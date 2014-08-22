@@ -266,18 +266,6 @@ var handlers = {
                 // testing
                 menuURL: baselocation + "/statusPanel.html"
               }});
-        port.postMessage({topic: 'social.ambient-notification',
-              data: {
-                name: "panel2",
-                iconURL: RECOMMEND_ICON,
-                counter: "",
-                contentPanel: baselocation + "/statusPanel.html",
-                label: "Test Ambient 2",
-                // normally this would be a url to a web page that works in
-                // a normal browser tab, we're just reusing this panel for
-                // testing
-                menuURL: baselocation + "/statusPanel.html"
-              }});
     }
     } catch(e) {
       log(e.stack+"\n");
