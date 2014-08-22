@@ -2,11 +2,18 @@ var chatters = 0;
 var baselocation = location.href.substr(0, location.href.indexOf("sidebar.htm"));
 
 function onLoad() {
+  //dump("sidebar onload called\n");
   var worker = navigator.mozSocial.getWorker();
   $("body").css("background-color", worker? "green": "red")
   $("#domain").text(location.host);
   var data = document.cookie.split("=",2)[1];
   userIsConnected(JSON.parse(data));
+  setTimeout(function() {
+    worker.port.postMessage({topic: 'social.manifest-get'});
+  }, 0);
+}
+window.onunload = function() {
+  //dump("sidebar unLoad called\n");
 }
 
 // via the visibility api
@@ -132,6 +139,9 @@ messageHandlers = {
   },
   'social.user-unrecommend': function(data) {
     $("#shared").text("");
+  },
+  'social.manifest': function(data) {
+    $("#version").text("version: "+data.version);
   }
 };
 
@@ -146,7 +156,7 @@ navigator.mozSocial.getWorker().port.onmessage = function onmessage(e) {
     }
 };
 navigator.mozSocial.getWorker().port.postMessage({topic: "broadcast.listen", data: true});
-dump("**** sidebar portid is "+navigator.mozSocial.getWorker().port._portid+"\n");
+//dump("**** sidebar portid is "+navigator.mozSocial.getWorker().port._portid+"\n");
 // here we ask the worker to reload itself.  The worker will send a reload
 // message to the Firefox api.
 function workerReload() {

@@ -80,7 +80,7 @@ onconnect = function(e) {
       if (msg.topic && handlers[msg.topic])
         handlers[msg.topic](port, msg);
       else {
-        log("message topic not handled: "+msg.topic+" "+JSON.stringify(msg));
+        log("message topic not handled, passing through to apiPort: "+msg.topic+" "+JSON.stringify(msg));
         // this is just a simple way for content to get a call passed through
         // to the worker api in Firefox for our testing.
         try {
@@ -122,13 +122,20 @@ var handlers = {
   },
   
   'worker.update': function(port, msg) {
-    log("***** worker setting manifest "+JSON.stringify(manifest)+"\n");
+    //log("***** worker getting current manifest "+JSON.stringify(manifest)+"\n");
+    this.updating = true;
     apiPort.postMessage({topic: 'social.manifest-get'});
   },
   'social.manifest': function(port, msg) {
-    log("***** worker recieved manifest from fx "+JSON.stringify(manifest)+"\n");
+    //log("***** worker recieved manifest from fx "+JSON.stringify(msg.data)+", updating? "+this.updating+"\n");
     // we could check to see if we need to update, this test just updates
-    apiPort.postMessage({topic: 'social.manifest-set', data: manifest});
+    if (this.updating) {
+        this.updating = false;
+        msg.data.version++;
+        apiPort.postMessage({topic: 'social.manifest-set', data: msg.data});
+    } else {
+        broadcast(msg.topic, msg.data);
+    }
   },
 
   // worker.reload is our own message and is not defined by socialapi.  Our
