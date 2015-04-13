@@ -246,8 +246,8 @@ var handlers = {
   // setup any notification icons in our toolbar button.
   'social.cookies-get-response': function(port, msg) {
     try {
-    let cookies = msg.data;
-    let newUserData = {};
+    var cookies = msg.data;
+    var newUserData = {};
     for (var i=0; i < cookies.length; i++) {
       if (cookies[i].name == "userdata") {
         newUserData = cookies[i].value ? JSON.parse(cookies[i].value) : {};
