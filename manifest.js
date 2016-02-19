@@ -12,7 +12,7 @@ function getManifest() {
     "icon64URL": baseurl+"/firefox64.png",
   
     // at least one of these must be defined
-    "workerURL": baseurl+"/worker.js",
+    //"workerURL": baseurl+"/worker.js",
     "sidebarURL": baseurl+"/sidebar.htm",
     "statusURL": baseurl+"/statusPanel.html",
     "shareURL": baseurl+"/share.html?url=%{url}",

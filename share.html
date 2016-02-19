@@ -6,6 +6,21 @@
     <title>Demo Share Window</title>
     <script src="js/jquery-1.11.1.min.js"></script>
     <script src="./share.js" type="text/javascript"></script>
+    <script>
+function goodbye(e) {
+    if(!e) e = window.event;
+    //e.cancelBubble is supported by IE - this will kill the bubbling process.
+    e.cancelBubble = true;
+    e.returnValue = 'You sure you want to leave?'; //This is displayed on the dialog
+
+    //e.stopPropagation works in Firefox.
+    if (e.stopPropagation) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
+}
+window.onbeforeunload=goodbye; 
+    </script>
 </head>
 
 <body onload="onLoad()">

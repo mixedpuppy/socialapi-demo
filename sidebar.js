@@ -1,16 +1,51 @@
 var chatters = 0;
 var baselocation = location.href.substr(0, location.href.indexOf("sidebar.htm"));
 
+var bSW = ('serviceWorker' in navigator);
+
+navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function(reg) {
+
+  if(reg.installing) {
+    console.log('Service worker installing');
+  } else if(reg.waiting) {
+    console.log('Service worker installed');
+  } else if(reg.active) {
+    console.log('Service worker active');
+  }
+
+}).catch(function(error) {
+  // registration failed
+  console.log('Registration failed with ' + error);
+});
+
 function onLoad() {
   //dump("sidebar onload called\n");
-  var worker = navigator.mozSocial.getWorker();
-  $("body").css("background-color", worker? "green": "red")
   $("#domain").text(location.host);
   var data = document.cookie.split("=",2)[1];
   userIsConnected(JSON.parse(data));
-  setTimeout(function() {
-    worker.port.postMessage({topic: 'social.manifest-get'});
-  }, 0);
+  //
+  //if (bSW) {
+  //  navigator.serviceWorker.register('/sw.js', { scope: '/' }).then(function(reg) {
+  //
+  //    if(reg.installing) {
+  //      console.log('Service worker installing');
+  //    } else if(reg.waiting) {
+  //      console.log('Service worker installed');
+  //    } else if(reg.active) {
+  //      console.log('Service worker active');
+  //    }
+  //
+  //  }).catch(function(error) {
+  //    // registration failed
+  //    console.log('Registration failed with ' + error);
+  //  });
+  //} else {
+  //  var worker = navigator.mozSocial.getWorker();
+  //  $("body").css("background-color", worker? "green": "red")
+  //  setTimeout(function() {
+  //    worker.port.postMessage({topic: 'social.manifest-get'});
+  //  }, 0);
+  //}
 }
 window.onunload = function() {
   //dump("sidebar unLoad called\n");
@@ -122,8 +157,8 @@ messageHandlers = {
   "worker.connected": function(data) {
     // our port has connected with the worker, do some initialization
     // worker.connected is our own custom message
-    var worker = navigator.mozSocial.getWorker();
-    worker.port.postMessage({topic: "broadcast.listen", data: true});
+    var port = navigator.serviceWorker.controller;
+    port.postMessage({topic: "broadcast.listen", data: true});
   },
   "social.user-profile": function(data) {
     if (data.userName)
@@ -145,27 +180,23 @@ messageHandlers = {
   }
 };
 
-navigator.mozSocial.getWorker().port.onmessage = function onmessage(e) {
-    //dump("SIDEBAR Got message: " + e.data.topic + " " + e.data.data +"\n");
-    var topic = e.data.topic;
-    var data = e.data.data;
-    if (messageHandlers[topic])
-        messageHandlers[topic](data);
-    if (topic && topic == "social.port-closing") {
-      dump("!!!!!!!!! port has closed\n");
-    }
-};
-navigator.mozSocial.getWorker().port.postMessage({topic: "broadcast.listen", data: true});
-//dump("**** sidebar portid is "+navigator.mozSocial.getWorker().port._portid+"\n");
+navigator.serviceWorker.addEventListener('message', function(event) {
+  dump("serviceWorker data "+JSON.stringify(event.data)+"\n");
+  var topic = event.data.topic;
+  var data = event.data.data;
+  if (messageHandlers[topic])
+      messageHandlers[topic](data);
+});
+
 // here we ask the worker to reload itself.  The worker will send a reload
 // message to the Firefox api.
 function workerReload() {
-  var worker = navigator.mozSocial.getWorker();
-  worker.port.postMessage({topic: "worker.reload", data: true});
+  var port = navigator.serviceWorker.controller;
+  port.postMessage({topic: "worker.reload", data: true});
 }
 function updateManifest() {
-  var worker = navigator.mozSocial.getWorker();
-  worker.port.postMessage({topic: "worker.update", data: true});
+  var port = navigator.serviceWorker.controller;
+  port.postMessage({topic: "worker.update", data: true});
 }
 
 // we open a flyout panel which appears to one side of our sidebar.  The offset
@@ -187,7 +218,7 @@ function closePanel() {
     panelWin = undefined;
   }
 }
-if (navigator.mozSocial.loadPanel) {
+if (navigator.mozSocial && navigator.mozSocial.loadPanel) {
   dump("********** preload the flyout\n");
   navigator.mozSocial.loadPanel("./flyout.html", function() {
     dump("********** flyout has loaded, ready open it\n");
@@ -204,28 +235,13 @@ function openChat(event) {
   });
 }
 
-// just some test debug output for some events
-window.addEventListener("scroll", function(e) {
-  dump("scrolling sidebar...\n");
-}, false);
-
-// frameShow/Hide will eventually be deprecated, see the visibility api below
-// these event handlers demonstrate that document.visibilityState will contain
-// the same value as mozSocial.isVisible
-window.addEventListener("socialFrameShow", function(e) {
-  dump("socialFrameShow, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
-}, false);
-window.addEventListener("socialFrameHide", function(e) {
-  dump("socialFrameHide, visibility is "+document.visibilityState+" or "+navigator.mozSocial.isVisible+"\n");
-}, false);
-
-
 // this notify function is used for manual testing.  We tell the worker to
 // call an api for us so we can:
 // 1. make the worker request a chat window is opened
 // 2. make the worker send a notification
 function notify(type) {
-  var port = navigator.mozSocial.getWorker().port;
+  //var port = navigator.mozSocial.getWorker().port;
+  var port = navigator.serviceWorker.controller;
   // XXX shouldn't need a full url here.
   switch(type) {
     case "link":
@@ -242,6 +258,7 @@ function notify(type) {
       port.postMessage({topic:"social.notification-create", data: data});
       break;
     case "chat-request":
+      navigator.serviceWorker.controller.postMessage({topic:"social.request-chat", data: baselocation+"/chatWindow.html?id="+(chatters++)});
       port.postMessage({topic:"social.request-chat", data: baselocation+"/chatWindow.html?id="+(chatters++)});
       break;
   }

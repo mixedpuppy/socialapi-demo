@@ -1,13 +1,4 @@
 function onLoad() {
-  // visual verification that we do indeed get a worker port
-  var worker = navigator.mozSocial.getWorker();
-  var el = document.getElementById("content");
-  if (worker) {
-    el.style.borderColor = "green";
-  } else {
-    el.style.borderColor = "red";
-  }
-
   onhashchange();  
 }
 

@@ -16,6 +16,6 @@ app.shutdown = function(callback) {
   server.close(callback);
 };
 
-var server = app.listen(Number(process.env.PORT || 8000), function() {
+var server = app.listen(Number(process.env.PORT || 8888), function() {
   console.log('NODE_ENV=%s http://%s:%d', app.settings.env, server.address().address, server.address().port);
 });
